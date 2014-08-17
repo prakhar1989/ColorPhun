@@ -21,18 +21,39 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Points: 120"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/points_label"
+            android:text="Points"
+            android:layout_marginRight="10dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Level: 2"
+            android:id="@+id/points_value"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_toRightOf="@id/points_label"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/level_value"
+            android:layout_marginLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/level_label"
+            android:text="Levels"
+            android:layout_toLeftOf="@id/level_value"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_centerVertical="true" />
+
 
     </RelativeLayout>
 
