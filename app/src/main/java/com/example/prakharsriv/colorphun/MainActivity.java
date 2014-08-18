@@ -7,16 +7,26 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button topBtn, bottomBtn;
     private TextView pointsTextView, levelTextView;
+    private ProgressBar timerProgress;
+
     private int level;
     private int points;
-    private final int POINT_INCREMENT = 20;
+    private int timer;
+    private boolean guess;
+
+    private static final int POINT_INCREMENT = 2;
+    private static final int TIMER_INCREMENT = 2;
+    private static final int TIMER_DECREMENT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +39,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
         pointsTextView = (TextView) findViewById(R.id.points_value);
         levelTextView = (TextView) findViewById(R.id.level_value);
 
+        timerProgress = (ProgressBar) findViewById(R.id.progress_bar);
+
         // initialize the crew
         resetGame();
 
         // set the stage
         topBtn.setOnClickListener(this);
         bottomBtn.setOnClickListener(this);
+
+        Timer t = new Timer();
+
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (guess) {
+                    timer += TIMER_INCREMENT;
+                    guess = false;
+                } else {
+                    timer -= TIMER_DECREMENT;
+                }
+                timerProgress.setProgress(timer);
+            }
+        }, 100, 100);
 
         // begin the show
         setColorsOnButtons();
@@ -49,20 +76,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void resetGame() {
         level = 1;
         points = 0;
+        timer = 50;
+        guess = false;
         pointsTextView.setText(Integer.toString(points));
         levelTextView.setText(Integer.toString(level));
+        timerProgress.setProgress(timer);
     }
 
     @Override
     public void onClick(View view) {
+        calculatePoints(view);
+        setColorsOnButtons();
+    }
 
-        Drawable clickedBtnBg = view.getBackground();
-        Drawable unclickedBtnBg;
-        if (view == topBtn) {
-            unclickedBtnBg = bottomBtn.getBackground();
-        } else {
-            unclickedBtnBg = topBtn.getBackground();
-        }
+    // updates points. Takes the view clicked as a parameter
+    private void calculatePoints(View clickedView) {
+        Drawable clickedBtnBg = clickedView.getBackground();
+        Drawable unclickedBtnBg = clickedView == topBtn ? bottomBtn.getBackground()
+                                                        : topBtn.getBackground();
 
         int alpha1 = clickedBtnBg.getAlpha();
         int alpha2 = unclickedBtnBg.getAlpha();
@@ -70,12 +101,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (alpha1 > alpha2) {
             points = points + POINT_INCREMENT;
             pointsTextView.setText(Integer.toString(points));
+
+            // set the level
+            if (points > level * 50) {
+                level += 1;
+                levelTextView.setText(Integer.toString(level));
+            }
+            guess = true;
         } else {
+            guess = false;
             Toast.makeText(this, "Game over!", Toast.LENGTH_SHORT).show();
             resetGame();
         }
-
-        setColorsOnButtons();
     }
 
     // generates a pair of colors separated by alpha controlled by a level

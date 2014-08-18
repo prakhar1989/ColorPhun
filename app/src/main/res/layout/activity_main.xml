@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_height="50dp"
-        android:progress="50"
+        android:id="@+id/progress_bar"
         android:max="100"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/level_label"
-            android:text="Levels"
+            android:text="Level"
             android:layout_toLeftOf="@id/level_value"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_centerVertical="true" />
