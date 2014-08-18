@@ -15,7 +15,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    private Button topBtn, bottomBtn;
+    private Button topBtn, bottomBtn, startBtn;
     private TextView pointsTextView, levelTextView;
     private ProgressBar timerProgress;
 
@@ -23,10 +23,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private int points;
     private int timer;
     private boolean guess;
+    private boolean gameStart = false;
 
     private static final int POINT_INCREMENT = 2;
     private static final int TIMER_INCREMENT = 2;
     private static final int TIMER_DECREMENT = 1;
+    private static final int TIMER_DELAY = 100;
+    private static final int TIMER_PERIOD = 100;
+    private static final int START_TIMER = 50;
+
+    private static Timer t = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         topBtn = (Button) findViewById(R.id.top_button);
         bottomBtn = (Button) findViewById(R.id.bottom_button);
+        startBtn = (Button) findViewById(R.id.start_button);
 
         pointsTextView = (TextView) findViewById(R.id.points_value);
         levelTextView = (TextView) findViewById(R.id.level_value);
@@ -48,8 +55,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         topBtn.setOnClickListener(this);
         bottomBtn.setOnClickListener(this);
 
-        Timer t = new Timer();
+        startBtn.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                startGame();
+            }
+        });
+    }
 
+    private void startTimer() {
         t.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -57,14 +70,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     timer += TIMER_INCREMENT;
                     guess = false;
                 } else {
-                    timer -= TIMER_DECREMENT;
+                    if (timer <= 0) {
+                        t.cancel();
+                    } else {
+                        timer -= TIMER_DECREMENT;
+                    }
                 }
                 timerProgress.setProgress(timer);
             }
-        }, 100, 100);
-
-        // begin the show
-        setColorsOnButtons();
+        }, TIMER_DELAY, TIMER_PERIOD);
     }
 
     private void setColorsOnButtons() {
@@ -74,17 +88,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void resetGame() {
+        gameStart = false;
         level = 1;
         points = 0;
-        timer = 50;
-        guess = false;
         pointsTextView.setText(Integer.toString(points));
         levelTextView.setText(Integer.toString(level));
+        timerProgress.setProgress(0);
+    }
+
+    private void startGame() {
+        guess = false;
+        gameStart = true;
+        setColorsOnButtons();
+        timer = START_TIMER;
         timerProgress.setProgress(timer);
+        startTimer();
     }
 
     @Override
     public void onClick(View view) {
+        if (!gameStart) return;
         calculatePoints(view);
         setColorsOnButtons();
     }
@@ -99,6 +122,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         int alpha2 = unclickedBtnBg.getAlpha();
 
         if (alpha1 > alpha2) {
+            guess = true;
             points = points + POINT_INCREMENT;
             pointsTextView.setText(Integer.toString(points));
 
@@ -107,12 +131,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 level += 1;
                 levelTextView.setText(Integer.toString(level));
             }
-            guess = true;
         } else {
-            guess = false;
-            Toast.makeText(this, "Game over!", Toast.LENGTH_SHORT).show();
-            resetGame();
+            gameOver();
         }
+    }
+
+    private void gameOver() {
+        Toast.makeText(this, "Game over!", Toast.LENGTH_SHORT).show();
+        resetGame();
     }
 
     // generates a pair of colors separated by alpha controlled by a level

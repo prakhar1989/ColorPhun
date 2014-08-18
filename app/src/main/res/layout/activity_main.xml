@@ -8,9 +8,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_height="50dp"
         android:id="@+id/progress_bar"
-        android:max="100"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:max="100" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,9 +21,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/points_label"
             android:text="Points"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"/>
 
         <TextView
@@ -33,24 +31,31 @@
             android:layout_height="wrap_content"
             android:id="@+id/points_value"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_toRightOf="@id/points_label"
+            android:layout_toEndOf="@id/points_label"
             android:layout_centerVertical="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/start_button"
+            android:text="PLAY"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/level_value"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentEnd="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/level_label"
             android:text="Level"
-            android:layout_toLeftOf="@id/level_value"
+            android:layout_toStartOf="@id/level_value"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_centerVertical="true" />
 
