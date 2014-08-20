@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -13,8 +12,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -24,7 +21,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private int level, points;
     private boolean gameStart = false;
-    private Thread thread;
     private Runnable runnable;
     private int timer;
 
@@ -62,14 +58,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         });
 
-
         runnable = new Runnable() {
-            /* In the thread
-             * 1. While the progress bar value is not zero
-             * 2. Keep decrementing using a TIMER_DECREMENT
-             * 3. Update the UI via Post handler
-             * 4. If the loop ends, call the game over?
-             */
             @Override
             public void run() {
                 while (timer > 0 && gameStart) {
@@ -123,7 +112,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         startBtn.setVisibility(View.INVISIBLE);
         setColorsOnButtons();
         timer = START_TIMER;
-        thread = new Thread(runnable);
+        Thread thread = new Thread(runnable);
         thread.start();
     }
 
@@ -181,7 +170,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         int color1 = Color.argb(alpha1, red, green, blue);
         int color2 = Color.argb(alpha2, red, green, blue);
 
-        Pair<Integer, Integer> colorPair = new Pair(color1, color2);
-        return colorPair;
+        return new Pair(color1, color2);
     }
 }
