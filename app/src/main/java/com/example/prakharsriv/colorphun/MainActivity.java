@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final int POINT_INCREMENT = 2;
     private static int TIMER_DELTA = -1;
-    private static final int START_TIMER = 50;
+    private static final int START_TIMER = 100;
     private static final int FPS = 300;
 
     @Override
