@@ -10,9 +10,7 @@ import java.util.ArrayList;
 
 import scoreHandlers.ScoreModels.CPScore;
 
-/**
- * Created by Swapnil on 8/20/14.
- */
+
 public class DBHandler extends SQLiteOpenHelper {
 
     private final String DATABASE_NAME = "cpScoreBoard";

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -134,18 +133,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void endGame() {
         gameStart = false;
-<<<<<<< HEAD
         GameOverPopup.Builder popup = new GameOverPopup.Builder(this);
         popup.setTitle("Game Over!");
         popup.show();
-=======
-        Toast.makeText(this, "Game over!", Toast.LENGTH_SHORT).show();
->>>>>>> 38529551f52158a4dcf56f868beec4afbe2dca8d
+
         updateScores(points);
         resetGame();
     }
 
-<<<<<<< HEAD
     private void showScoreBoard() {
 
         topScores = new CPScoreManager(this).getTopScores();
@@ -243,9 +238,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         });
 
         alert.show();
-=======
-    private void updateScores(int points) {
->>>>>>> 38529551f52158a4dcf56f868beec4afbe2dca8d
     }
 
     @Override
