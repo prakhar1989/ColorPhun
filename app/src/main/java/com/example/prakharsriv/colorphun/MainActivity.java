@@ -102,7 +102,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         };
     }
 
-
     private void setColorsOnButtons() {
         Pair<Integer, Integer> colorPair = getRandomColor(level);
         topBtn.setBackgroundColor(colorPair.first);
@@ -113,6 +112,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         gameStart = false;
         level = 1;
         points = 0;
+
+        // update view
         pointsTextView.setText(Integer.toString(points));
         levelTextView.setText(Integer.toString(level));
         startBtn.setVisibility(View.VISIBLE);
@@ -124,6 +125,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         gameStart = true;
         startBtn.setVisibility(View.INVISIBLE);
         setColorsOnButtons();
+
+        // start timer
         timer = START_TIMER;
         Thread thread = new Thread(runnable);
         thread.start();
@@ -161,7 +164,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void updateScores(final int points) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("You played well");
+        alert.setTitle("Leaderboard");
         alert.setMessage("You have scored " + points + "\nEnter your name:");
 
         // Set an EditText view to get user input
@@ -218,7 +221,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setColorsOnButtons();
     }
 
-    // updates points. Takes the view clicked as a parameter
     private void calculatePoints(View clickedView) {
 
         View unclickedView = clickedView == topBtn ? bottomBtn : topBtn;
@@ -241,6 +243,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 levelTextView.setText(Integer.toString(level));
             }
         } else {
+            // incorrect guess
             endGame();
         }
     }
