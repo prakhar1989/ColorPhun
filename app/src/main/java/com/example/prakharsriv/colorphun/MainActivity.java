@@ -22,16 +22,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private TextView pointsTextView, levelTextView;
     private ProgressBar timerProgress;
 
-    private int level, points, timer;
-    private int timerDirection = -1;
+    private int level, points;
     private boolean gameStart = false;
     private Thread thread;
     private Runnable runnable;
+    private int timer;
 
     private static final int POINT_INCREMENT = 2;
-    private static final int TIMER_DELTA = 20;
+    private static final int TIMER_DELTA = 5;
     private static final int START_TIMER = 50;
-    private static final int FPS = 1000;
+    private static final int FPS = 500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         });
 
+
         runnable = new Runnable() {
             /* In the thread
              * 1. While the progress bar value is not zero
@@ -71,29 +72,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
              */
             @Override
             public void run() {
-                int timer = START_TIMER;
-                if (gameStart) {
-                    while (timer > 0) {
-                        // Decrement timer safely
-                        synchronized (this) {
-                            try {
-                                // TODO: Choose between wait or Thread.sleep
-                                Thread.sleep(FPS);
-                            } catch (InterruptedException e) {
-                                Log.i("THREAD ERROR", e.getMessage());
-                            }
-                            timer = timer - TIMER_DELTA;
+                Log.d("THREAD ERROR", "Game started");
+                while (timer > 0 && gameStart) {
+                    synchronized (this) {
+                        try {
+                            // TODO: Choose between wait or Thread.sleep
+                            wait(FPS);
+                        } catch (InterruptedException e) {
+                            Log.i("THREAD ERROR", e.getMessage());
                         }
-                        //handler.sendEmptyMessage(timer);
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                timerProgress.setProgress(timer);
-                            }
-                        });
+                        timer = timer - TIMER_DELTA;
+                        Log.i("THREAD ERROR", "TIMER VALUE: " + timer);
                     }
-                    Log.i("THREAD ERROR", "Timer over");
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            timerProgress.setProgress(timer);
+                        }
+                    });
                 }
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        endGame();
+                    }
+                });
             }
         };
 
@@ -119,17 +122,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void startGame() {
         gameStart = true;
         setColorsOnButtons();
+        timer = START_TIMER;
         thread = new Thread(runnable);
         thread.start();
     }
 
     private void endGame() {
         gameStart = false;
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            Log.i("THREAD ERRORS", e.getMessage());
-        }
         Toast.makeText(this, "Game over!", Toast.LENGTH_SHORT).show();
         resetGame();
     }
@@ -143,8 +142,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     // updates points. Takes the view clicked as a parameter
     private void calculatePoints(View clickedView) {
-        timerDirection = -1;
-
         Drawable clickedBtnBg = clickedView.getBackground();
         Drawable unclickedBtnBg = clickedView == topBtn ? bottomBtn.getBackground()
                                                         : topBtn.getBackground();
@@ -154,7 +151,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // correct guess
         if (alpha1 > alpha2) {
-            timerDirection = 1;
             points = points + POINT_INCREMENT;
             pointsTextView.setText(Integer.toString(points));
 
