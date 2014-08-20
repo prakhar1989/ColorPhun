@@ -29,9 +29,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private int timer;
 
     private static final int POINT_INCREMENT = 2;
-    private static final int TIMER_DELTA = 5;
+    private static int TIMER_DELTA = -1;
     private static final int START_TIMER = 50;
-    private static final int FPS = 500;
+    private static final int FPS = 300;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,17 +72,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
              */
             @Override
             public void run() {
-                Log.d("THREAD ERROR", "Game started");
                 while (timer > 0 && gameStart) {
                     synchronized (this) {
                         try {
-                            // TODO: Choose between wait or Thread.sleep
                             wait(FPS);
                         } catch (InterruptedException e) {
                             Log.i("THREAD ERROR", e.getMessage());
                         }
-                        timer = timer - TIMER_DELTA;
-                        Log.i("THREAD ERROR", "TIMER VALUE: " + timer);
+                        timer = timer + TIMER_DELTA;
+                        if (TIMER_DELTA > 0) {
+                            TIMER_DELTA = -TIMER_DELTA;
+                        }
                     }
                     handler.post(new Runnable() {
                         @Override
@@ -99,8 +99,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 });
             }
         };
-
-
     }
 
 
@@ -116,11 +114,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         points = 0;
         pointsTextView.setText(Integer.toString(points));
         levelTextView.setText(Integer.toString(level));
+        startBtn.setVisibility(View.VISIBLE);
         timerProgress.setProgress(0);
     }
 
     private void startGame() {
         gameStart = true;
+        startBtn.setVisibility(View.INVISIBLE);
         setColorsOnButtons();
         timer = START_TIMER;
         thread = new Thread(runnable);
@@ -152,11 +152,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // correct guess
         if (alpha1 > alpha2) {
             points = points + POINT_INCREMENT;
+            TIMER_DELTA = -TIMER_DELTA;
             pointsTextView.setText(Integer.toString(points));
 
             // set the level
             if (points > level * 50) {
                 level += 1;
+                TIMER_DELTA = level;
                 levelTextView.setText(Integer.toString(level));
             }
         } else {
