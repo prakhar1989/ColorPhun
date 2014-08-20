@@ -124,7 +124,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void endGame() {
         gameStart = false;
-        Log.i("THREAD ERROR", "Ending game!");
         GameOverPopup.Builder popup = new GameOverPopup.Builder(this);
         popup.setTitle("Game Over!");
         popup.show();
