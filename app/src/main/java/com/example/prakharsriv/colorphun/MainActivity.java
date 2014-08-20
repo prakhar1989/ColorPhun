@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -19,20 +22,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private TextView pointsTextView, levelTextView;
     private ProgressBar timerProgress;
 
-    private int level;
-    private int points;
-    private int timer;
-    private boolean guess;
+    private int level, points, timer;
+    private int timerDirection = -1;
     private boolean gameStart = false;
+    private Thread thread;
+    private Runnable runnable;
 
     private static final int POINT_INCREMENT = 2;
-    private static final int TIMER_INCREMENT = 2;
-    private static final int TIMER_DECREMENT = 1;
-    private static final int TIMER_DELAY = 100;
-    private static final int TIMER_PERIOD = 100;
+    private static final int TIMER_DELTA = 20;
     private static final int START_TIMER = 50;
-
-    private static Timer t = new Timer();
+    private static final int FPS = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +47,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         timerProgress = (ProgressBar) findViewById(R.id.progress_bar);
 
+        final Handler handler = new Handler();
+
         // initialize the crew
         resetGame();
 
@@ -60,26 +61,45 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startGame();
             }
         });
-    }
 
-    private void startTimer() {
-        t.scheduleAtFixedRate(new TimerTask() {
+        runnable = new Runnable() {
+            /* In the thread
+             * 1. While the progress bar value is not zero
+             * 2. Keep decrementing using a TIMER_DECREMENT
+             * 3. Update the UI via Post handler
+             * 4. If the loop ends, call the game over?
+             */
             @Override
             public void run() {
-                if (guess) {
-                    timer += TIMER_INCREMENT;
-                    guess = false;
-                } else {
-                    if (timer <= 0) {
-                        t.cancel();
-                    } else {
-                        timer -= TIMER_DECREMENT;
+                int timer = START_TIMER;
+                if (gameStart) {
+                    while (timer > 0) {
+                        // Decrement timer safely
+                        synchronized (this) {
+                            try {
+                                // TODO: Choose between wait or Thread.sleep
+                                Thread.sleep(FPS);
+                            } catch (InterruptedException e) {
+                                Log.i("THREAD ERROR", e.getMessage());
+                            }
+                            timer = timer - TIMER_DELTA;
+                        }
+                        //handler.sendEmptyMessage(timer);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                timerProgress.setProgress(timer);
+                            }
+                        });
                     }
+                    Log.i("THREAD ERROR", "Timer over");
                 }
-                timerProgress.setProgress(timer);
             }
-        }, TIMER_DELAY, TIMER_PERIOD);
+        };
+
+
     }
+
 
     private void setColorsOnButtons() {
         Pair<Integer, Integer> colorPair = getRandomColor(level);
@@ -97,12 +117,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void startGame() {
-        guess = false;
         gameStart = true;
         setColorsOnButtons();
-        timer = START_TIMER;
-        timerProgress.setProgress(timer);
-        startTimer();
+        thread = new Thread(runnable);
+        thread.start();
+    }
+
+    private void endGame() {
+        gameStart = false;
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            Log.i("THREAD ERRORS", e.getMessage());
+        }
+        Toast.makeText(this, "Game over!", Toast.LENGTH_SHORT).show();
+        resetGame();
     }
 
     @Override
@@ -114,6 +143,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     // updates points. Takes the view clicked as a parameter
     private void calculatePoints(View clickedView) {
+        timerDirection = -1;
+
         Drawable clickedBtnBg = clickedView.getBackground();
         Drawable unclickedBtnBg = clickedView == topBtn ? bottomBtn.getBackground()
                                                         : topBtn.getBackground();
@@ -121,8 +152,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         int alpha1 = clickedBtnBg.getAlpha();
         int alpha2 = unclickedBtnBg.getAlpha();
 
+        // correct guess
         if (alpha1 > alpha2) {
-            guess = true;
+            timerDirection = 1;
             points = points + POINT_INCREMENT;
             pointsTextView.setText(Integer.toString(points));
 
@@ -132,14 +164,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 levelTextView.setText(Integer.toString(level));
             }
         } else {
-            gameOver();
+            endGame();
         }
     }
 
-    private void gameOver() {
-        Toast.makeText(this, "Game over!", Toast.LENGTH_SHORT).show();
-        resetGame();
-    }
 
     // generates a pair of colors separated by alpha controlled by a level
     private Pair<Integer, Integer> getRandomColor(int level) {
