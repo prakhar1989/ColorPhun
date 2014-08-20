@@ -120,9 +120,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void startGame() {
-
         topScores = new CPScoreManager(this).getTopScores();
-
         gameStart = true;
         startBtn.setVisibility(View.INVISIBLE);
         setColorsOnButtons();
@@ -142,43 +140,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void showScoreBoard() {
-
         topScores = new CPScoreManager(this).getTopScores();
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
         alert.setTitle("Wall of Fame");
-
         String message = "No Top scorers yet!";
-
         if(topScores!=null)
         {
-
-
             StringBuilder builder = new StringBuilder();
             String newLine = "\n";
-
             for(CPScore score : topScores)
             {
                 builder.append(score.getPlayer() + " : " + score.getScore());
                 builder.append(newLine);
             }
-
            message = builder.toString();
         }
-
         alert.setMessage(message);
-
         alert.show();
     }
 
     private void updateScores(final int points) {
-
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
         alert.setTitle("You played well");
         alert.setMessage("You have scored " + points + "\nEnter your name:");
 
-    // Set an EditText view to get user input
+        // Set an EditText view to get user input
         final EditText input = new EditText(this);
         alert.setView(input);
 
@@ -189,54 +175,39 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 CPScore score = new CPScore();
                 score.setPlayer(playerName);
                 score.setScore(points);
-
                 boolean scroreUpdate = false;
 
-                if(topScores!=null)
-                {
+                if(topScores!=null) {
                     int scoreIndex = 0;
-                    for (CPScore cpScore : topScores)
-                    {
-                        if(cpScore.getScore() < score.getScore())
-                        {
+                    for (CPScore cpScore : topScores) {
+                        if(cpScore.getScore() < score.getScore()) {
                             cpScore.setPlayer(score.getPlayer());
                             cpScore.setScore(score.getScore());
-
                             topScores.set(scoreIndex, cpScore);
-
                             scroreUpdate = true;
-
                             break;
                         }
                         scoreIndex = scoreIndex + 1;
                     }
-
-                    if(!scroreUpdate)
-                    {
+                    if(!scroreUpdate) {
                         topScores.add(score);
                     }
-                }else
-                {
+                } else {
                     topScores = new ArrayList<CPScore>(1);
                     topScores.add(score);
                 }
 
                 CPScoreManager scoreManager = new CPScoreManager(MainActivity.this);
-
                 scoreManager.updateScores(topScores);
-
                 showScoreBoard();
             }
         });
 
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-
                 showScoreBoard();
             }
         });
-
         alert.show();
     }
 
@@ -251,9 +222,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void calculatePoints(View clickedView) {
 
         View unclickedView = clickedView == topBtn ? bottomBtn : topBtn;
-
         ColorDrawable clickedColor = (ColorDrawable) clickedView.getBackground();
-
         ColorDrawable unClickedColor = (ColorDrawable) unclickedView.getBackground();
 
         int alpha1 =  Color.alpha(clickedColor.getColor());
@@ -265,7 +234,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             TIMER_DELTA = -TIMER_DELTA;
             pointsTextView.setText(Integer.toString(points));
 
-            // set the level
+            // increment level
             if (points > level * 50) {
                 level += 1;
                 TIMER_DELTA = level;
