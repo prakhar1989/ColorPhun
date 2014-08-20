@@ -122,7 +122,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void endGame() {
         gameStart = false;
         Toast.makeText(this, "Game over!", Toast.LENGTH_SHORT).show();
+        updateScores(points);
         resetGame();
+    }
+
+    private void updateScores(int points) {
     }
 
     @Override
