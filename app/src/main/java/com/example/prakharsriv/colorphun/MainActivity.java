@@ -1,6 +1,7 @@
 package com.example.prakharsriv.colorphun;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -80,12 +81,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         }
                     });
                 }
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        endGame();
-                    }
-                });
+                if (gameStart) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            endGame();
+                        }
+                    });
+                }
             }
         };
     }
@@ -118,7 +121,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void endGame() {
         gameStart = false;
-        Toast.makeText(this, "Game over!", Toast.LENGTH_SHORT).show();
+        Log.i("THREAD ERROR", "Ending game!");
+        GameOverPopup.Builder popup = new GameOverPopup.Builder(this);
+        popup.setTitle("Game Over!");
+        popup.show();
         resetGame();
     }
 
