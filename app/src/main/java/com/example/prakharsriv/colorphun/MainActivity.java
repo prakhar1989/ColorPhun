@@ -120,8 +120,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void endGame() {
         gameStart = false;
 
-        final Intent intent = new Intent(this, ScoreboardActivity.class);
+        final Intent intent = new Intent(this, HomeScreenActivity.class);
         final CPScoreManager scoreManager = new CPScoreManager(this);
+        scoreManager.addScore(points);
 
         GameOverPopup.Builder popup = new GameOverPopup.Builder(this);
         popup.setTitle("Game Over!");
@@ -131,9 +132,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startGame();
             }
         });
-        popup.setNegativeButton("View Scores", new DialogInterface.OnClickListener() {
+        popup.setNegativeButton("Main Menu", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                scoreManager.addScore(points);
                 startActivity(intent);
                 finish();
             }
@@ -175,7 +175,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             endGame();
         }
     }
-
 
     // generates a pair of colors separated by alpha controlled by a level
     private Pair<Integer, Integer> getRandomColor(int level) {
