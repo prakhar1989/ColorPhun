@@ -13,11 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-
 import scoreHandlers.CPScoreManager;
-import scoreHandlers.ScoreModels.CPScore;
 
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -33,10 +29,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final int POINT_INCREMENT = 2;
     private static int TIMER_DELTA = -1;
-    private static final int START_TIMER = 100;
+    private static final int START_TIMER = 50;
     private static final int FPS = 300;
-
-    private ArrayList<CPScore> topScores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +108,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void startGame() {
-        topScores = new CPScoreManager(this).getTopScores();
         gameStart = true;
         setColorsOnButtons();
 
@@ -128,6 +121,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         gameStart = false;
 
         final Intent intent = new Intent(this, ScoreboardActivity.class);
+        final CPScoreManager scoreManager = new CPScoreManager(this);
 
         GameOverPopup.Builder popup = new GameOverPopup.Builder(this);
         popup.setTitle("Game Over!");
@@ -139,43 +133,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         });
         popup.setNegativeButton("View Scores", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                updateScore(points);
+                scoreManager.addScore(points);
                 startActivity(intent);
                 finish();
             }
         });
         popup.show();
         resetGame();
-    }
-
-    private void updateScore(final int points) {
-        CPScore score = new CPScore();
-        score.setPlayer("NA");
-        score.setScore(points);
-        boolean scoreUpdate = false;
-
-        if(topScores!=null) {
-            int scoreIndex = 0;
-            for (CPScore cpScore : topScores) {
-                if(cpScore.getScore() < score.getScore()) {
-                    cpScore.setPlayer(score.getPlayer());
-                    cpScore.setScore(score.getScore());
-                    topScores.set(scoreIndex, cpScore);
-                    scoreUpdate = true;
-                    break;
-                }
-                scoreIndex = scoreIndex + 1;
-            }
-            if(!scoreUpdate) {
-                topScores.add(score);
-            }
-        } else {
-            topScores = new ArrayList<CPScore>(1);
-            topScores.add(score);
-        }
-
-        CPScoreManager scoreManager = new CPScoreManager(MainActivity.this);
-        scoreManager.updateScores(topScores);
     }
 
     @Override

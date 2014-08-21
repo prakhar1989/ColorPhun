@@ -33,4 +33,33 @@ public class CPScoreManager {
             }
         }
     }
+
+    public void addScore(final int points) {
+        ArrayList<CPScore> topScores = this.getTopScores();
+        CPScore score = new CPScore();
+        score.setPlayer("NA");
+        score.setScore(points);
+        boolean scoreUpdate = false;
+
+        if(topScores!=null) {
+            int scoreIndex = 0;
+            for (CPScore cpScore : topScores) {
+                if(cpScore.getScore() < score.getScore()) {
+                    cpScore.setPlayer(score.getPlayer());
+                    cpScore.setScore(score.getScore());
+                    topScores.set(scoreIndex, cpScore);
+                    scoreUpdate = true;
+                    break;
+                }
+                scoreIndex = scoreIndex + 1;
+            }
+            if(!scoreUpdate) {
+                topScores.add(score);
+            }
+        } else {
+            topScores = new ArrayList<CPScore>(1);
+            topScores.add(score);
+        }
+        this.updateScores(topScores);
+    }
 }
