@@ -2,6 +2,7 @@ package com.example.prakharsriv.colorphun;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -132,6 +133,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void endGame() {
         gameStart = false;
+
+        final Intent intent = new Intent(this, ScoreboardActivity.class);
+
         GameOverPopup.Builder popup = new GameOverPopup.Builder(this);
         popup.setTitle("Game Over!");
         popup.setMessage("Congrats! You scored " + points + " points");
@@ -142,32 +146,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         });
         popup.setNegativeButton("View Scores", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                updateAndShowScores(points);
+                //updateScore(points);
+                startActivity(intent);
             }
         });
         popup.show();
-
         resetGame();
     }
 
-    private void showScoreBoard() {
-        topScores = new CPScoreManager(this).getTopScores();
-        GameOverPopup.Builder alert = new GameOverPopup.Builder(this);
-        alert.setTitle("Scoreboard");
-        String message = "No Top scorers yet!";
-        if(topScores != null) {
-            StringBuilder builder = new StringBuilder();
-            for(CPScore score: topScores) {
-                builder.append(score.getPlayer() + " : " + score.getScore());
-                builder.append("\n");
-            }
-           message = builder.toString();
-        }
-        alert.setMessage(message);
-        alert.show();
-    }
-
-    private void updateAndShowScores(final int points) {
+    private void updateScore(final int points) {
         CPScore score = new CPScore();
         score.setPlayer("NA");
         score.setScore(points);
@@ -195,7 +182,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         CPScoreManager scoreManager = new CPScoreManager(MainActivity.this);
         scoreManager.updateScores(topScores);
-        showScoreBoard();
     }
 
     @Override
