@@ -45,7 +45,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         topBtn = (Button) findViewById(R.id.top_button);
         bottomBtn = (Button) findViewById(R.id.bottom_button);
-        startBtn = (Button) findViewById(R.id.start_button);
 
         pointsTextView = (TextView) findViewById(R.id.points_value);
         levelTextView = (TextView) findViewById(R.id.level_value);
@@ -60,12 +59,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // set the stage
         topBtn.setOnClickListener(this);
         bottomBtn.setOnClickListener(this);
-
-        startBtn.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                startGame();
-            }
-        });
 
         runnable = new Runnable() {
             @Override
@@ -99,6 +92,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
             }
         };
+
+        startGame();
     }
 
     private void setColorsOnButtons() {
@@ -115,14 +110,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // update view
         pointsTextView.setText(Integer.toString(points));
         levelTextView.setText(Integer.toString(level));
-        startBtn.setVisibility(View.VISIBLE);
         timerProgress.setProgress(0);
     }
 
     private void startGame() {
         topScores = new CPScoreManager(this).getTopScores();
         gameStart = true;
-        startBtn.setVisibility(View.INVISIBLE);
         setColorsOnButtons();
 
         // start timer
@@ -146,8 +139,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         });
         popup.setNegativeButton("View Scores", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //updateScore(points);
+                updateScore(points);
                 startActivity(intent);
+                finish();
             }
         });
         popup.show();

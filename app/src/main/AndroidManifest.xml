@@ -9,14 +9,11 @@
         android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+            android:label="@string/title_activity_main" >
         </activity>
         <activity
             android:name=".HomeScreenActivity"
-            android:label="@string/title_activity_home_screen"
+            android:label="@string/app_name"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

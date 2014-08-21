@@ -39,13 +39,6 @@
             android:layout_toRightOf="@id/points_label"
             android:layout_centerVertical="true" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/start_button"
-            android:text="@string/start_button_text"
-            android:layout_centerHorizontal="true"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
