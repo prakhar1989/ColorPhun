@@ -1,7 +1,6 @@
 package com.example.prakharsriv.colorphun;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -136,25 +134,32 @@ public class MainActivity extends Activity implements View.OnClickListener {
         gameStart = false;
         GameOverPopup.Builder popup = new GameOverPopup.Builder(this);
         popup.setTitle("Game Over!");
+        popup.setMessage("Congrats! You scored " + points + " points");
+        popup.setPositiveButton("Play Again", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                startGame();
+            }
+        });
+        popup.setNegativeButton("View Scores", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                updateAndShowScores(points);
+            }
+        });
         popup.show();
 
-        updateScores(points);
         resetGame();
     }
 
     private void showScoreBoard() {
         topScores = new CPScoreManager(this).getTopScores();
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Wall of Fame");
+        GameOverPopup.Builder alert = new GameOverPopup.Builder(this);
+        alert.setTitle("Scoreboard");
         String message = "No Top scorers yet!";
-        if(topScores!=null)
-        {
+        if(topScores != null) {
             StringBuilder builder = new StringBuilder();
-            String newLine = "\n";
-            for(CPScore score : topScores)
-            {
+            for(CPScore score: topScores) {
                 builder.append(score.getPlayer() + " : " + score.getScore());
-                builder.append(newLine);
+                builder.append("\n");
             }
            message = builder.toString();
         }
@@ -162,56 +167,35 @@ public class MainActivity extends Activity implements View.OnClickListener {
         alert.show();
     }
 
-    private void updateScores(final int points) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Leaderboard");
-        alert.setMessage("You have scored " + points + "\nEnter your name:");
+    private void updateAndShowScores(final int points) {
+        CPScore score = new CPScore();
+        score.setPlayer("NA");
+        score.setScore(points);
+        boolean scoreUpdate = false;
 
-        // Set an EditText view to get user input
-        final EditText input = new EditText(this);
-        alert.setView(input);
-
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String playerName = input.getText().toString();
-
-                CPScore score = new CPScore();
-                score.setPlayer(playerName);
-                score.setScore(points);
-                boolean scroreUpdate = false;
-
-                if(topScores!=null) {
-                    int scoreIndex = 0;
-                    for (CPScore cpScore : topScores) {
-                        if(cpScore.getScore() < score.getScore()) {
-                            cpScore.setPlayer(score.getPlayer());
-                            cpScore.setScore(score.getScore());
-                            topScores.set(scoreIndex, cpScore);
-                            scroreUpdate = true;
-                            break;
-                        }
-                        scoreIndex = scoreIndex + 1;
-                    }
-                    if(!scroreUpdate) {
-                        topScores.add(score);
-                    }
-                } else {
-                    topScores = new ArrayList<CPScore>(1);
-                    topScores.add(score);
+        if(topScores!=null) {
+            int scoreIndex = 0;
+            for (CPScore cpScore : topScores) {
+                if(cpScore.getScore() < score.getScore()) {
+                    cpScore.setPlayer(score.getPlayer());
+                    cpScore.setScore(score.getScore());
+                    topScores.set(scoreIndex, cpScore);
+                    scoreUpdate = true;
+                    break;
                 }
-
-                CPScoreManager scoreManager = new CPScoreManager(MainActivity.this);
-                scoreManager.updateScores(topScores);
-                showScoreBoard();
+                scoreIndex = scoreIndex + 1;
             }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                showScoreBoard();
+            if(!scoreUpdate) {
+                topScores.add(score);
             }
-        });
-        alert.show();
+        } else {
+            topScores = new ArrayList<CPScore>(1);
+            topScores.add(score);
+        }
+
+        CPScoreManager scoreManager = new CPScoreManager(MainActivity.this);
+        scoreManager.updateScores(topScores);
+        showScoreBoard();
     }
 
     @Override
