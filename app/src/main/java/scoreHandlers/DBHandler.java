@@ -31,6 +31,14 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    // clears scores
+    public boolean purgeScores() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + SCOREBOARD_TABLE);
+        db.close();
+        return true;
+    }
+
     // inserts a score in the database
     public boolean insertScore (CPScore score) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -56,9 +64,10 @@ public class DBHandler extends SQLiteOpenHelper {
             scoresList = new ArrayList<CPScore>(resultSet.getCount());
             resultSet.moveToNext();
             while (resultSet.moveToNext()) {
-                CPScore score = new CPScore();
-                score.setPlayer(resultSet.getString(resultSet.getColumnIndex("player")));
-                score.setScore(resultSet.getInt(resultSet.getColumnIndex("score")));
+                String player = resultSet.getString(resultSet.getColumnIndex("player"));
+                int points = resultSet.getInt(resultSet.getColumnIndex("score"));
+
+                CPScore score = new CPScore(player, points);
                 scoresList.add(score);
             }
         }
