@@ -1,14 +1,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@android:id/background">
-        <shape>
-            <solid android:color="@color/white_bg" />
+        <shape android:shape="rectangle">
+            <solid android:color="@color/progress_red" />
         </shape>
     </item>
-    <item android:id="@android:id/progress">
+    <item android:id="@+id/progress_fill">
         <clip>
-            <shape>
-                <solid
-                    android:color="@color/progress_green" />
+            <shape android:shape="rectangle">
+                <solid android:color="@color/progress_green" />
             </shape>
         </clip>
     </item>

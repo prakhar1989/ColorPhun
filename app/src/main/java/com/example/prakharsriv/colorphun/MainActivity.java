@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -32,8 +31,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final int POINT_INCREMENT = 2;
     private static int TIMER_DELTA = -1;
-    private static final int START_TIMER = 50;
-    private static final int FPS = 300;
+    private static final int START_TIMER = 250;
+    private static final int FPS = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
