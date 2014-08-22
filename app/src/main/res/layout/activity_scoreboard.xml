@@ -8,6 +8,8 @@
         android:id="@+id/scores_list_view"
         android:divider="@color/green_bg"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="@android:color/transparent"/>
 
 </LinearLayout>

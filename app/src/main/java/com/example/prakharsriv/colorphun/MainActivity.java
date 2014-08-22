@@ -111,7 +111,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         this.finish();
     }
 
-
     private void setColorsOnButtons() {
         Pair<Integer, Integer> colorPair = getRandomColor(level);
         topBtn.setBackgroundColor(colorPair.first);
