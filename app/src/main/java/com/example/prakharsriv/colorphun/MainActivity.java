@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -91,6 +92,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         startGame();
     }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        gameStart = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gameStart = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.finish();
+    }
+
 
     private void setColorsOnButtons() {
         Pair<Integer, Integer> colorPair = getRandomColor(level);
