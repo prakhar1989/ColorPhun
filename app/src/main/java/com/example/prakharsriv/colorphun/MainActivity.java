@@ -119,14 +119,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void endGame() {
         gameStart = false;
+        String popMsg = "You scored: " + points + " points";
 
         final Intent intent = new Intent(this, HomeScreenActivity.class);
         final CPScoreManager scoreManager = new CPScoreManager(this);
-        scoreManager.addScore(points, level);
+        if (points > 0 && scoreManager.newTopScore(points, level)) {
+            scoreManager.addScore(points, level);
+            popMsg = "New Top Score! " + popMsg;
+        }
 
         GameOverPopup.Builder popup = new GameOverPopup.Builder(this);
+
         popup.setTitle("Game Over!");
-        popup.setMessage("Congrats! You scored " + points + " points");
+        popup.setMessage(popMsg);
+
         popup.setPositiveButton("Play Again", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 startGame();

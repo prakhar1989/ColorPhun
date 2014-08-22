@@ -33,6 +33,16 @@ public class CPScoreManager {
         return "User";
     }
 
+    // Returns a boolean to indicate where a score will be inserted
+    public boolean newTopScore(int points, int level) {
+        ArrayList<CPScore> scores = getTopScores();
+        CPScore score = new CPScore(getPlayerName(), points, level);
+        return scores == null
+                || (scores.size() < MAX_SCORES_COUNT && !dbHandler.hasScore(score))
+                || (scores.size() == MAX_SCORES_COUNT && !dbHandler.hasScore(score) &&
+                        scores.get(MAX_SCORES_COUNT - 1).getScore() < points);
+    }
+
     /* Adds a unique non-zero score to the db.
      * Updates lowest score if number of records = MAX_SCORES_COUNT
      */
@@ -40,8 +50,7 @@ public class CPScoreManager {
         CPScore score = new CPScore(getPlayerName(), points, level);
         if (!dbHandler.hasScore(score) && score.getScore() > 0) {
             ArrayList<CPScore> scores = getTopScores();
-
-            if (scores.size() < MAX_SCORES_COUNT) {
+            if (scores == null || scores.size() < MAX_SCORES_COUNT) {
                 dbHandler.insertScore(score);
             } else {
                 dbHandler.updateScore(scores.get(MAX_SCORES_COUNT - 1), score);
