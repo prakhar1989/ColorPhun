@@ -18,7 +18,7 @@ import scoreHandlers.CPScoreManager;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    private Button topBtn, bottomBtn, startBtn;
+    private Button topBtn, bottomBtn;
     private TextView pointsTextView, levelTextView;
     private ProgressBar timerProgress;
 
@@ -122,7 +122,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         final Intent intent = new Intent(this, HomeScreenActivity.class);
         final CPScoreManager scoreManager = new CPScoreManager(this);
-        scoreManager.addScore(points);
+        scoreManager.addScore(points, level);
 
         GameOverPopup.Builder popup = new GameOverPopup.Builder(this);
         popup.setTitle("Game Over!");

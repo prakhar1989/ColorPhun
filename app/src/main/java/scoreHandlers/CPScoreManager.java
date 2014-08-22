@@ -9,6 +9,9 @@ public class CPScoreManager {
     Context mContext;
     DBHandler dbHandler;
 
+    // max scores to keep in database
+    private final int MAX_SCORES_COUNT = 5;
+
     public CPScoreManager(Context context) {
         this.mContext = context;
         this.dbHandler = new DBHandler(this.mContext);
@@ -17,12 +20,6 @@ public class CPScoreManager {
     // returns all the scores stored
     public ArrayList<CPScore> getTopScores() {
         return  dbHandler.getScores();
-    }
-
-    // returns the highest score
-    public CPScore getHighScore() {
-        ArrayList<CPScore> scores = getTopScores();
-        return scores == null ? null : scores.get(0);
     }
 
     // clears all scores
@@ -36,9 +33,19 @@ public class CPScoreManager {
         return "User";
     }
 
-    // adds a score to the db, takes points as an input
-    public void addScore(int points) {
-        CPScore score = new CPScore(getPlayerName(), points);
-        dbHandler.insertScore(score);
+    /* Adds a unique non-zero score to the db.
+     * Updates lowest score if number of records = MAX_SCORES_COUNT
+     */
+    public void addScore(int points, int level) {
+        CPScore score = new CPScore(getPlayerName(), points, level);
+        if (!dbHandler.hasScore(score) && score.getScore() > 0) {
+            ArrayList<CPScore> scores = getTopScores();
+
+            if (scores.size() < MAX_SCORES_COUNT) {
+                dbHandler.insertScore(score);
+            } else {
+                dbHandler.updateScore(scores.get(MAX_SCORES_COUNT - 1), score);
+            }
+        }
     }
 }

@@ -17,13 +17,15 @@ public class ScoreboardActivity extends Activity {
         setContentView(R.layout.activity_scoreboard);
 
         final CPScoreManager scoreManager = new CPScoreManager(this);
-
         ArrayList<CPScore> scores = scoreManager.getTopScores();
         List<String> stringScores = new ArrayList<String>();
 
         if (scores != null) {
+            stringScores.add("NAME        SCORE          LEVEL");
             for (CPScore score: scores) {
-                stringScores.add(score.getPlayer() + "         " + score.getScore());
+                // TODO: Make this better by using fixed-width strings
+                stringScores.add(score.getPlayer() + "                 " +
+                        score.getScore() +  "               " + score.getLevel());
             }
         }
 

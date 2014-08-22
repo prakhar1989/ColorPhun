@@ -20,8 +20,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String sql = "CREATE TABLE " + SCOREBOARD_TABLE + " (" +
                 "scoreIndex INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "player TEXT, " +
-                "score INTEGER);";
+                "player TEXT, score INTEGER, level INTEGER);";
         sqLiteDatabase.execSQL(sql);
     }
 
@@ -39,6 +38,19 @@ public class DBHandler extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean updateScore(CPScore oldScore, CPScore newScore) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("player", newScore.getPlayer());
+        contentValues.put("score", newScore.getScore());
+        contentValues.put("level", newScore.getLevel());
+
+        db.update(SCOREBOARD_TABLE, contentValues, "score=" + oldScore.getScore(), null);
+        db.close();
+        return true;
+    }
+
     // inserts a score in the database
     public boolean insertScore (CPScore score) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -46,10 +58,21 @@ public class DBHandler extends SQLiteOpenHelper {
 
         contentValues.put("player", score.getPlayer());
         contentValues.put("score", score.getScore());
+        contentValues.put("level", score.getLevel());
 
         db.insert(SCOREBOARD_TABLE, null, contentValues);
         db.close();
         return true;
+    }
+
+    // returns a boolean indicating where the score exists in DB
+    public boolean hasScore(CPScore score) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " +  SCOREBOARD_TABLE +
+                                      " WHERE score = " + score.getScore(), null);
+        boolean isPresent = cursor.getCount() > 0;
+        db.close();
+        return isPresent;
     }
 
     // returns an array list of score records
@@ -64,8 +87,9 @@ public class DBHandler extends SQLiteOpenHelper {
             do {
                 String player = cursor.getString(cursor.getColumnIndex("player"));
                 int points = cursor.getInt(cursor.getColumnIndex("score"));
+                int level = cursor.getInt(cursor.getColumnIndex("level"));
 
-                CPScore score = new CPScore(player, points);
+                CPScore score = new CPScore(player, points, level);
                 scoresList.add(score);
             } while (cursor.moveToNext());
         }
