@@ -1,8 +1,6 @@
 package scoreHandlers;
 
 import android.content.Context;
-import android.util.Log;
-
 import java.util.ArrayList;
 import scoreHandlers.ScoreModels.CPScore;
 
@@ -39,7 +37,7 @@ public class CPScoreManager {
     }
 
     // adds a score to the db, takes points as an input
-    public void addScore(final int points) {
+    public void addScore(int points) {
         CPScore score = new CPScore(getPlayerName(), points);
         dbHandler.insertScore(score);
     }

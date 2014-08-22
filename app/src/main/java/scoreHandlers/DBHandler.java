@@ -56,21 +56,20 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<CPScore> getScores() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<CPScore> scoresList = null;
-        Cursor resultSet =  db.rawQuery("SELECT * FROM " + SCOREBOARD_TABLE +
+        Cursor cursor =  db.rawQuery("SELECT * FROM " + SCOREBOARD_TABLE +
                                         " ORDER BY score DESC", null);
-        resultSet.moveToFirst();
 
-        if(resultSet.getCount() > 0) {
-            scoresList = new ArrayList<CPScore>(resultSet.getCount());
-            resultSet.moveToNext();
-            while (resultSet.moveToNext()) {
-                String player = resultSet.getString(resultSet.getColumnIndex("player"));
-                int points = resultSet.getInt(resultSet.getColumnIndex("score"));
+        if (cursor.moveToFirst()) {
+            scoresList = new ArrayList<CPScore>(cursor.getCount());
+            do {
+                String player = cursor.getString(cursor.getColumnIndex("player"));
+                int points = cursor.getInt(cursor.getColumnIndex("score"));
 
                 CPScore score = new CPScore(player, points);
                 scoresList.add(score);
-            }
+            } while (cursor.moveToNext());
         }
+
         db.close();
         return scoresList;
     }

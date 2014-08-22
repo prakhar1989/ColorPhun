@@ -2,7 +2,6 @@ package com.example.prakharsriv.colorphun;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ public class ScoreboardActivity extends Activity {
         final CPScoreManager scoreManager = new CPScoreManager(this);
 
         ArrayList<CPScore> scores = scoreManager.getTopScores();
-        Log.i("COLORPHUN", "Total scores fetched: " + scores.size());
         List<String> stringScores = new ArrayList<String>();
 
         if (scores != null) {
