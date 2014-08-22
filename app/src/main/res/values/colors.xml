@@ -2,4 +2,9 @@
     <color name="black_overlay">#66000000</color>
     <color name="yellow_bg">#ffffb732</color>
     <color name="green_bg">#ff6e9900</color>
+    <color name='white_bg'>#ffffffff</color>
+    <color name="progress_green">#ff39DBAC</color>
+    <color name="progress_red">#ffff8393</color>
+    <color name="text_label">#ff696A6D</color>
+    <color name="number_label">#ff3C3D3E</color>
 </resources>

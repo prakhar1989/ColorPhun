@@ -188,7 +188,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         int alpha2 = Color.alpha(unClickedColor.getColor());
 
         // correct guess
-        if (alpha1 > alpha2) {
+        if (alpha1 < alpha2) {
             points = points + POINT_INCREMENT;
             TIMER_DELTA = -TIMER_DELTA;
             pointsTextView.setText(Integer.toString(points));
