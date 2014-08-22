@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import scoreHandlers.CPScoreManager;
 
 
@@ -109,6 +111,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void startGame() {
         gameStart = true;
+
+        Toast.makeText(this, R.string.game_help, Toast.LENGTH_LONG).show();
         setColorsOnButtons();
 
         // start timer

@@ -10,4 +10,5 @@
     <string name="play_game_button_text">Play Game</string>
     <string name="scoreboard_button_text">Scoreboard</string>
     <string name="title_activity_scoreboard">Scoreboard</string>
+    <string name="game_help">Tap the lighter color FAST!</string>
 </resources>
