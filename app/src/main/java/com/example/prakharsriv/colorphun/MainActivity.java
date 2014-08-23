@@ -13,11 +13,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.prakharsriv.colorphun.util.BetterColor;
-
-import java.util.Random;
-
 import scoreHandlers.CPScoreManager;
 
 
@@ -114,7 +110,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void setColorsOnButtons() {
-        int[] colorPair = getRandomColor(level);
+        int[] colorPair = getRandomColor();
         topBtn.setBackgroundColor(colorPair[0]);
         bottomBtn.setBackgroundColor(colorPair[1]);
     }
@@ -192,7 +188,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // correct guess
         if (alpha1 < alpha2) {
             points = points + POINT_INCREMENT;
-            TIMER_DELTA = -TIMER_DELTA;
+            TIMER_DELTA = -TIMER_DELTA; // give a timer bump
             pointsTextView.setText(Integer.toString(points));
 
             // increment level
@@ -207,20 +203,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    // generates a pair of colors separated by alpha controlled by a level
-    private int[] getRandomColor(int level) {
+    // generates a pair of colors separated by alpha
+    private int[] getRandomColor() {
 
         int color = Color.HSVToColor(BetterColor.getColor());
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);
 
-        // generate 2 alpha values separated by a random delta
-        // TODO: Reduce probability of very bright colors
-        Random random = new Random();
-        int alpha1 = 185 + random.nextInt(70);
-        int delta = (6 - level) * 7;
-        int alpha2 = alpha1 + delta * (alpha1 > 220 ? -1 : 1);
+        int alpha1, alpha2;
+        if (Math.random() > 0.5) {
+            alpha1 = 255;
+            alpha2 = 185;
+        } else {
+            alpha1 = 185;
+            alpha2 = 255;
+        }
 
         int color1 = Color.argb(alpha1, red, green, blue);
         int color2 = Color.argb(alpha2, red, green, blue);

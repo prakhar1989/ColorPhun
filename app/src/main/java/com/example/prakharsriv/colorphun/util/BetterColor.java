@@ -69,24 +69,24 @@ public class BetterColor {
                         new int[] {60,78}, new int[] {70,70}, new int[] {80,60}, new int[] {90,55}, new int[] {100,50} }
         );
         defineColor("ORANGE", new int[] {19,46},
-                new int[][] { new int[] {20,100}, new int[] {30,93}, new int[] {40,88}, new int[] {60,85},
-                        new int[] {70,70}, new int[] {100,70} }
+                new int[][] { new int[] {20,100}, new int[] {30,93}, new int[] {40,88},
+                        new int[] {50,86}, new int[] {60,85}, new int[] {70,70}, new int[] {100,70} }
         );
         defineColor("YELLOW", new int[] {47,62},
                 new int[][] { new int[] {25,100}, new int[] {40,94}, new int[] {50,89}, new int[] {60,86},
                         new int[] {70,84}, new int[] {80,82}, new int[] {90,80}, new int[] {100,75} }
         );
-        defineColor("GREEN", new int[] {63,150},
+        defineColor("GREEN", new int[] {63,178},
                 new int[][] { new int[] {30,100}, new int[] {40,90}, new int[] {50,85}, new int[] {60,81},
-                        new int[] {70,74}, new int[] {80,84}, new int[] {90,50}, new int[] {100,40} }
+                        new int[] {70,74}, new int[] {80,64}, new int[] {90,50}, new int[] {100,40} }
         );
         defineColor("BLUE", new int[] {179,257},
                 new int[][] { new int[] {20,100}, new int[] {30,86}, new int[] {40,80}, new int[] {50,74},
                         new int[] {60,60}, new int[] {70,52}, new int[] {80,44}, new int[] {90,39}, new int[] {100,35} }
         );
         defineColor("PURPLE", new int[] {258,282},
-                new int[][] { new int[] {20,100}, new int[] {30,87}, new int[] {50,70}, new int[] {60,65},
-                        new int[] {70,59}, new int[] {80,52}, new int[] {90,45}, new int[] {100,42} }
+                new int[][] { new int[] {20,100}, new int[] {30,87}, new int[] {40,79}, new int[] {50,70},
+                        new int[] {60,65}, new int[] {70,59}, new int[] {80,52}, new int[] {90,45}, new int[] {100,42} }
         );
         defineColor("PINK", new int[] {283,334},
                 new int[][] { new int[] {20,100}, new int[] {30,90}, new int[] {40,86}, new int[] {60,84},
@@ -119,14 +119,14 @@ public class BetterColor {
     private static int pickSaturation(int hue) {
         int saturationRange[] = getSaturationRange(hue);
         if (saturationRange != null) {
-            return randomWithin(saturationRange[0], saturationRange[1]);
+            return randomWithin(saturationRange[1] - 10, saturationRange[1]);
         }
         return -1;
     }
 
     private static int pickBrightness(int hue, int saturation) {
         int bMin = getMinimumBrightness(hue, saturation);
-        int bMax = bMin + 10;
+        int bMax = bMin + 20;
         return randomWithin(bMin, bMax);
     }
 
