@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<set xmlns:android="http://schemas.android.com/apk/res/android" android:ordering="sequentially">
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="sequentially"
+    android:interpolator="@android:anim/bounce_interpolator">
     <set>
         <objectAnimator
             android:propertyName="textSize"
             android:duration="200"
-            android:valueFrom="100"
+            android:valueFrom="60"
             android:valueTo="20"
             android:valueType="floatType"/>
     </set>
