@@ -2,20 +2,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_bg"
+    android:layout_weight="1"
     android:padding="5dp"
     android:orientation="vertical">
 
     <ProgressBar
         android:layout_width="match_parent"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_height="20dp"
+        android:layout_height="0dp"
+        android:layout_weight="6"
         android:id="@+id/progress_bar"
         android:progressDrawable="@drawable/timer_progress"
         android:max="800" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
+        android:layout_weight="10"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
@@ -65,17 +68,18 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_centerVertical="true" />
 
-
     </RelativeLayout>
 
     <Button
         android:id="@+id/top_button"
         android:layout_width="match_parent"
-        android:layout_height="260dp" />
+        android:layout_height="0dp"
+        android:layout_weight="42"/>
 
     <Button
         android:id="@+id/bottom_button"
         android:layout_width="match_parent"
-        android:layout_height="260dp" />
+        android:layout_height="0dp"
+        android:layout_weight="42"/>
 
 </LinearLayout>
