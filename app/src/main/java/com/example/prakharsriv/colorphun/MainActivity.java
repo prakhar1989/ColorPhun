@@ -1,5 +1,7 @@
 package com.example.prakharsriv.colorphun;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +29,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private boolean gameStart = false;
     private Runnable runnable;
     private int timer;
+
+    private AnimatorSet pointAnim, levelAnim;
 
     private static final int POINT_INCREMENT = 2;
     private static int TIMER_DELTA = -1;
@@ -56,6 +60,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         topBtn.setOnClickListener(this);
         bottomBtn.setOnClickListener(this);
 
+        // setting up animations
+        pointAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.points_animations);
+        pointAnim.setTarget(pointsTextView);
+
+        levelAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.level_animations);
+        levelAnim.setTarget(levelTextView);
+
+
+        // setting up the game loop
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -191,12 +204,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
             points = points + POINT_INCREMENT;
             TIMER_DELTA = -TIMER_BUMP * TIMER_DELTA; // give a timer bump
             pointsTextView.setText(Integer.toString(points));
+            pointAnim.start();
 
             // increment level
-            if (points > level * 50) {
+            if (points > level * 5) {
                 level += 1;
                 TIMER_DELTA = level;
                 levelTextView.setText(Integer.toString(level));
+                levelAnim.start();
             }
         } else {
             // incorrect guess
