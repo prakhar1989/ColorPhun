@@ -8,12 +8,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.prakharsriv.colorphun.util.BetterColor;
+
+import java.util.Random;
 
 import scoreHandlers.CPScoreManager;
 
@@ -111,9 +114,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void setColorsOnButtons() {
-        Pair<Integer, Integer> colorPair = getRandomColor(level);
-        topBtn.setBackgroundColor(colorPair.first);
-        bottomBtn.setBackgroundColor(colorPair.second);
+        int[] colorPair = getRandomColor(level);
+        topBtn.setBackgroundColor(colorPair[0]);
+        bottomBtn.setBackgroundColor(colorPair[1]);
     }
 
     private void resetGame() {
@@ -205,19 +208,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     // generates a pair of colors separated by alpha controlled by a level
-    private Pair<Integer, Integer> getRandomColor(int level) {
-        int red = (int)(Math.random() * 255);
-        int green = (int)(Math.random() * 255);
-        int blue = (int)(Math.random() * 255);
+    private int[] getRandomColor(int level) {
 
-        // TODO: Improve the formula for alphas
-        int alpha1 = 200 + (int)(Math.random() * 55);
-        int delta = (10 - level) * 2;
+        int color = Color.HSVToColor(BetterColor.getColor());
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+
+        // generate 2 alpha values separated by a random delta
+        Random random = new Random();
+        int alpha1 = 200 + random.nextInt(55);
+        int delta = (6 - level) * 10;
         int alpha2 = alpha1 + delta * (alpha1 > 227 ? -1 : 1);
+
+        alpha1 = 255;
+        alpha2 = 200;
+        Log.i("ALPHAS", "Alpha1: " + alpha1 + " Alpha2: " + alpha2);
 
         int color1 = Color.argb(alpha1, red, green, blue);
         int color2 = Color.argb(alpha2, red, green, blue);
 
-        return new Pair(color1, color2);
+        return new int[] {color1, color2};
     }
 }
