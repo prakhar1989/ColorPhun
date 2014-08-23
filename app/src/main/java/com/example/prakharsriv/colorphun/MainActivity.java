@@ -3,7 +3,7 @@ package com.example.prakharsriv.colorphun;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.Activity;
-import android.content.DialogInterface;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,8 +18,7 @@ import android.widget.Toast;
 import com.example.prakharsriv.colorphun.util.BetterColor;
 import scoreHandlers.CPScoreManager;
 
-
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity implements GameOverPopup.GameOverPopupListener {
 
     private Button topBtn, bottomBtn;
     private TextView pointsTextView, levelTextView;
@@ -37,6 +36,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static final int TIMER_BUMP = 2;
     private static final int START_TIMER = 400;
     private static final int FPS = 100;
+    private static final int LEVEL = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +56,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // initialize the crew
         resetGame();
 
-        // set the stage
-        topBtn.setOnClickListener(this);
-        bottomBtn.setOnClickListener(this);
+
+        // setting up listeners on both buttons
+        topBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (!gameStart) return;
+                calculatePoints(view);
+                setColorsOnButtons();
+            }
+        });
+
+        // TODO: See if this duplication can be removed
+        bottomBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!gameStart) return;
+                calculatePoints(view);
+                setColorsOnButtons();
+            }
+        });
 
         // setting up animations
         pointAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.points_animations);
@@ -156,38 +172,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
         gameStart = false;
         String popMsg = "You scored: " + points + " points";
 
-        final Intent intent = new Intent(this, HomeScreenActivity.class);
         final CPScoreManager scoreManager = new CPScoreManager(this);
         if (points > 0 && scoreManager.newTopScore(points, level)) {
             scoreManager.addScore(points, level);
             popMsg = "New Top Score! " + popMsg;
         }
 
-        GameOverPopup.Builder popup = new GameOverPopup.Builder(this);
-
-        popup.setTitle("Game Over!");
-        popup.setMessage(popMsg);
-
-        popup.setPositiveButton("Play Again", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                startGame();
-            }
-        });
-        popup.setNegativeButton("Main Menu", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                startActivity(intent);
-                finish();
-            }
-        });
-        popup.show();
+        Bundle args = new Bundle();
+        args.putString("message", popMsg);
+        DialogFragment newFragment = new GameOverPopup();
+        newFragment.setArguments(args);
+        newFragment.show(this.getFragmentManager(), "dialog");
         resetGame();
     }
 
+
     @Override
-    public void onClick(View view) {
-        if (!gameStart) return;
-        calculatePoints(view);
-        setColorsOnButtons();
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        startGame();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        final Intent intent = new Intent(this, HomeScreenActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void calculatePoints(View clickedView) {
@@ -207,7 +216,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             pointAnim.start();
 
             // increment level
-            if (points > level * 5) {
+            if (points > level * LEVEL) {
                 level += 1;
                 TIMER_DELTA = level;
                 levelTextView.setText(Integer.toString(level));
@@ -241,4 +250,5 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         return new int[] {color1, color2};
     }
+
 }

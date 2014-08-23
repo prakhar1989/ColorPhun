@@ -11,4 +11,7 @@
     <string name="scoreboard_button_text">Scoreboard</string>
     <string name="title_activity_scoreboard">Scoreboard</string>
     <string name="game_help">Tap the lighter color FAST!</string>
+    <string name="game_over">Game Over!</string>
+    <string name="retry_game">Replay</string>
+    <string name="main_menu">Main Menu</string>
 </resources>
