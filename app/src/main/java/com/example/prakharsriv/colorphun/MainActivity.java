@@ -30,6 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final int POINT_INCREMENT = 2;
     private static int TIMER_DELTA = -1;
+    private static final int TIMER_BUMP = 2;
     private static final int START_TIMER = 400;
     private static final int FPS = 100;
 
@@ -67,7 +68,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         }
                         timer = timer + TIMER_DELTA;
                         if (TIMER_DELTA > 0) {
-                            TIMER_DELTA = -TIMER_DELTA;
+                            TIMER_DELTA = -TIMER_DELTA / TIMER_BUMP;
                         }
                     }
                     handler.post(new Runnable() {
@@ -188,7 +189,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // correct guess
         if (alpha1 < alpha2) {
             points = points + POINT_INCREMENT;
-            TIMER_DELTA = -TIMER_DELTA; // give a timer bump
+            TIMER_DELTA = -TIMER_BUMP * TIMER_DELTA; // give a timer bump
             pointsTextView.setText(Integer.toString(points));
 
             // increment level
