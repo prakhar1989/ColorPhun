@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final int POINT_INCREMENT = 2;
     private static int TIMER_DELTA = -1;
-    private static final int START_TIMER = 250;
+    private static final int START_TIMER = 400;
     private static final int FPS = 100;
 
     @Override
@@ -216,14 +216,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         int blue = Color.blue(color);
 
         // generate 2 alpha values separated by a random delta
+        // TODO: Reduce probability of very bright colors
         Random random = new Random();
-        int alpha1 = 200 + random.nextInt(55);
-        int delta = (6 - level) * 10;
-        int alpha2 = alpha1 + delta * (alpha1 > 227 ? -1 : 1);
-
-        alpha1 = 255;
-        alpha2 = 200;
-        Log.i("ALPHAS", "Alpha1: " + alpha1 + " Alpha2: " + alpha2);
+        int alpha1 = 185 + random.nextInt(70);
+        int delta = (6 - level) * 7;
+        int alpha2 = alpha1 + delta * (alpha1 > 220 ? -1 : 1);
 
         int color1 = Color.argb(alpha1, red, green, blue);
         int color2 = Color.argb(alpha2, red, green, blue);

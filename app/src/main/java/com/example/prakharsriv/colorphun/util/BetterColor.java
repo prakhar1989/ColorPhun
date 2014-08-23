@@ -76,7 +76,7 @@ public class BetterColor {
                 new int[][] { new int[] {25,100}, new int[] {40,94}, new int[] {50,89}, new int[] {60,86},
                         new int[] {70,84}, new int[] {80,82}, new int[] {90,80}, new int[] {100,75} }
         );
-        defineColor("GREEN", new int[] {63,78},
+        defineColor("GREEN", new int[] {63,150},
                 new int[][] { new int[] {30,100}, new int[] {40,90}, new int[] {50,85}, new int[] {60,81},
                         new int[] {70,74}, new int[] {80,84}, new int[] {90,50}, new int[] {100,40} }
         );
@@ -126,7 +126,7 @@ public class BetterColor {
 
     private static int pickBrightness(int hue, int saturation) {
         int bMin = getMinimumBrightness(hue, saturation);
-        int bMax = bMin + 20;
+        int bMax = bMin + 10;
         return randomWithin(bMin, bMax);
     }
 
