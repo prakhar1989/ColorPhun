@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">ColorPhun</string>
     <string name="action_settings">Settings</string>
     <string name="points_text">Points</string>
@@ -11,10 +12,13 @@
     <string name="scoreboard_button_text">Scoreboard</string>
     <string name="title_activity_scoreboard">Scoreboard</string>
     <string name="game_help">Tap the lighter color FAST!</string>
-    <string name="game_over">Game Over!</string>
+    <string name="game_over">Game Over</string>
     <string name="retry_game">Replay</string>
     <string name="main_menu">Main Menu</string>
     <string name="tagline1">A SIMPLE</string>
     <string name="tagline2">COLOR</string>
     <string name="tagline3">GAME</string>
+    <string name="title_activity_game_over">GameOverActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 import com.example.prakharsriv.colorphun.util.BetterColor;
 import scoreHandlers.CPScoreManager;
 
-public class MainActivity extends Activity implements GameOverPopup.GameOverPopupListener {
+public class MainActivity extends Activity {
 
     private Button topBtn, bottomBtn;
     private TextView pointsTextView, levelTextView;
@@ -48,6 +49,16 @@ public class MainActivity extends Activity implements GameOverPopup.GameOverPopu
 
         pointsTextView = (TextView) findViewById(R.id.points_value);
         levelTextView = (TextView) findViewById(R.id.level_value);
+        TextView pointsLabel = (TextView) findViewById(R.id.points_label);
+        TextView levelsLabel = (TextView) findViewById(R.id.level_label);
+
+        // setting up fonts
+        Typeface avenir_black = Typeface.createFromAsset(getAssets(), "fonts/avenir_black.ttf");
+        Typeface avenir_book = Typeface.createFromAsset(getAssets(), "fonts/avenir_book.ttf");
+        pointsTextView.setTypeface(avenir_black);
+        levelTextView.setTypeface(avenir_black);
+        pointsLabel.setTypeface(avenir_book);
+        levelsLabel.setTypeface(avenir_book);
 
         timerProgress = (ProgressBar) findViewById(R.id.progress_bar);
 
@@ -178,25 +189,8 @@ public class MainActivity extends Activity implements GameOverPopup.GameOverPopu
             popMsg = "New Top Score! " + popMsg;
         }
 
-        Bundle args = new Bundle();
-        args.putString("message", popMsg);
-        DialogFragment newFragment = new GameOverPopup();
-        newFragment.setArguments(args);
-        newFragment.show(this.getFragmentManager(), "dialog");
         resetGame();
-    }
-
-
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        startGame();
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        final Intent intent = new Intent(this, HomeScreenActivity.class);
-        startActivity(intent);
-        finish();
+        startActivity(new Intent(this, GameOverActivity.class));
     }
 
     private void calculatePoints(View clickedView) {
@@ -231,11 +225,7 @@ public class MainActivity extends Activity implements GameOverPopup.GameOverPopu
     // generates a pair of colors separated by alpha
     private int[] getRandomColor() {
 
-        float[] betterColor = BetterColor.getColor();
-        Log.i("COLORS", "Color generated - H: " + betterColor[0] +
-                            " S: " + betterColor[1] + " V: " +  betterColor[2]);
-
-        int color = Color.HSVToColor(betterColor);
+        int color = Color.HSVToColor(BetterColor.getColor());
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);
