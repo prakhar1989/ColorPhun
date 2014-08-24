@@ -13,7 +13,7 @@
         android:layout_weight="6"
         android:id="@+id/progress_bar"
         android:progressDrawable="@drawable/timer_progress"
-        android:max="800" />
+        android:max="600" />
 
     <RelativeLayout
         android:layout_width="match_parent"

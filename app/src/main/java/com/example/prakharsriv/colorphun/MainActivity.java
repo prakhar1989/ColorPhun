@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements GameOverPopup.GameOverPopu
     private static final int POINT_INCREMENT = 2;
     private static int TIMER_DELTA = -1;
     private static final int TIMER_BUMP = 2;
-    private static final int START_TIMER = 400;
+    private static final int START_TIMER = 300;
     private static final int FPS = 100;
     private static final int LEVEL = 50;
 

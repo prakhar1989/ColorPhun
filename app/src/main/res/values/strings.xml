@@ -14,4 +14,7 @@
     <string name="game_over">Game Over!</string>
     <string name="retry_game">Replay</string>
     <string name="main_menu">Main Menu</string>
+    <string name="tagline1">A SIMPLE</string>
+    <string name="tagline2">COLOR</string>
+    <string name="tagline3">GAME</string>
 </resources>

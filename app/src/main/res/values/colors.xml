@@ -7,4 +7,5 @@
     <color name="progress_red">#ffff4255</color>
     <color name="text_label">#ff696A6D</color>
     <color name="number_label">#ff3C3D3E</color>
+    <color name="red">#ffF91C56</color>
 </resources>
