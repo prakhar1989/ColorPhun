@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 
 public class GameOverPopup extends DialogFragment {
 
@@ -30,6 +32,10 @@ public class GameOverPopup extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         String popMsg = getArguments().getString("message");
+
+//        LayoutInflater inflater = getActivity().getLayoutInflater();
+//        builder.setView(inflater.inflate(R.layout.game_over_dialog, null));
+
         builder.setMessage(popMsg)
                 .setTitle(R.string.game_over)
                 .setPositiveButton(R.string.retry_game, new DialogInterface.OnClickListener() {

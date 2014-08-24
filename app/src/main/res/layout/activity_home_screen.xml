@@ -1,35 +1,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:background="@color/yellow_bg"
+    android:background="#1d2534"
     android:orientation="vertical">
 
+
     <ImageView
+        android:src="@drawable/logo_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="400dp" />
 
     <Button
         android:id="@+id/play_game_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/play_button"
         android:textSize="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/play_game_button_text"
+        android:text="Play"
         android:onClick="playGame" />
 
     <Button
         android:id="@+id/scores_btn"
         android:text="@string/scoreboard_button_text"
         android:background="@drawable/scoreboard_button"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="100dp"
         android:onClick="viewScoreBoard" />
 
 </LinearLayout>

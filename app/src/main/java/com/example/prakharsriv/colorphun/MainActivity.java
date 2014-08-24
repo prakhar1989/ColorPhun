@@ -231,7 +231,11 @@ public class MainActivity extends Activity implements GameOverPopup.GameOverPopu
     // generates a pair of colors separated by alpha
     private int[] getRandomColor() {
 
-        int color = Color.HSVToColor(BetterColor.getColor());
+        float[] betterColor = BetterColor.getColor();
+        Log.i("COLORS", "Color generated - H: " + betterColor[0] +
+                            " S: " + betterColor[1] + " V: " +  betterColor[2]);
+
+        int color = Color.HSVToColor(betterColor);
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);

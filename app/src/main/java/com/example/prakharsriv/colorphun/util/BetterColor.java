@@ -48,6 +48,10 @@ public class BetterColor {
 
     private static HashMap<String, ColorInfo> colorDictionary;
 
+    private static boolean removeHue(int hue) {
+        return (hue >= 150 && hue <= 180) || (hue >= 55 && hue <= 70);
+    }
+
     public static float[] getColor() {
 
         int H, S, V;
@@ -57,7 +61,7 @@ public class BetterColor {
             H = pickHue();
             S = pickSaturation(H);
             V = pickBrightness(H, S);
-        } while (S == -1 || V == 0);
+        } while (S == -1 || V == 0 || removeHue(H));
 
         return new float[] {(float) H, (float) S, (float) V};
     }
@@ -116,7 +120,14 @@ public class BetterColor {
         return randomWithin(0, 360);
     }
 
+    private static boolean isLightRange(int hue) {
+        return (hue >= 55 && hue <= 110) || (hue >= 145 && hue <= 180);
+    }
+
     private static int pickSaturation(int hue) {
+        if (isLightRange(hue)) {
+            return randomWithin(60, 80);
+        }
         int saturationRange[] = getSaturationRange(hue);
         if (saturationRange != null) {
             return randomWithin(saturationRange[1] - 10, saturationRange[1]);
@@ -125,6 +136,9 @@ public class BetterColor {
     }
 
     private static int pickBrightness(int hue, int saturation) {
+        if (isLightRange(hue)) {
+            return randomWithin(10, 20);
+        }
         int bMin = getMinimumBrightness(hue, saturation);
         int bMax = bMin + 20;
         return randomWithin(bMin, bMax);

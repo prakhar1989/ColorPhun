@@ -4,10 +4,7 @@
     <item android:state_pressed="false" android:state_focused="false">
         <shape >
             <solid
-                android:color="#fc700d" />
-            <stroke
-                android:width="5dp"
-                android:color="#ffaa01" />
+                android:color="#00c2f3" />
             <padding
                 android:left="70dp"
                 android:right="70dp"
