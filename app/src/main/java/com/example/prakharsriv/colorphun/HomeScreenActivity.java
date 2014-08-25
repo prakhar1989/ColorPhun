@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class HomeScreenActivity extends Activity {
@@ -16,7 +15,7 @@ public class HomeScreenActivity extends Activity {
         setContentView(R.layout.activity_home_screen);
 
         // setting the typeface
-        TextView taglineTextView1 = (TextView) findViewById(R.id.tagline_text);
+        final TextView taglineTextView1 = (TextView) findViewById(R.id.tagline_text);
         TextView taglineTextView2 = (TextView) findViewById(R.id.tagline_text2);
         TextView taglineTextView3 = (TextView) findViewById(R.id.tagline_text3);
 
@@ -29,5 +28,4 @@ public class HomeScreenActivity extends Activity {
     public void playGame(View view) {
         startActivity(new Intent(this, MainActivity.class));
     }
-
 }

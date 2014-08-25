@@ -19,10 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.prakharsriv.colorphun.util.BetterColor;
 
-//import com.facebook.rebound.SpringSystem;
-//import com.google.example.games.basegameutils.BaseGameActivity;
-//import com.google.android.gms.games.Games;
-
 public class MainActivity extends Activity {
 
     private Button topBtn, bottomBtn;

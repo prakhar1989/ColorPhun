@@ -21,5 +21,7 @@
     <string name="title_activity_game_over">GameOverActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="preference_file_key">com.example.prakharsriv.colorphun.PREFERENCES_FILE</string>
+    <string name="APP_ID">327910424750</string>
+    <string name="LEADERBOARD_ID">CgkIroHwx8UJEAIQAQ</string>
 
 </resources>

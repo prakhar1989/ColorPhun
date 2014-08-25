@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 public class GameOverActivity extends Activity {
+
+    private int points;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +36,13 @@ public class GameOverActivity extends Activity {
 
         // fetching and setting data
         Bundle bundle = getIntent().getExtras();
-        int points = bundle.getInt("points");
+        points = bundle.getInt("points");
         int level = bundle.getInt("level");
         int best = bundle.getInt("best");
         pointsBox.setText(String.format("%03d", points));
         bestBox.setText(String.format("%03d", best));
         levelIndicator.setText("Level " + Integer.toString(level));
+
     }
 
     public void playGame(View view) {
