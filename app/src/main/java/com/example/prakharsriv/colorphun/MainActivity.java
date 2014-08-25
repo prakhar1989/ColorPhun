@@ -35,9 +35,9 @@ public class MainActivity extends Activity {
     private static final int POINT_INCREMENT = 2;
     private static int TIMER_DELTA = -1;
     private static final int TIMER_BUMP = 2;
-    private static final int START_TIMER = 300;
+    private static final int START_TIMER = 200;
     private static final int FPS = 100;
-    private static final int LEVEL = 50;
+    private static final int LEVEL = 25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +170,7 @@ public class MainActivity extends Activity {
     private void startGame() {
         gameStart = true;
 
-        Toast.makeText(this, R.string.game_help, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.game_help, Toast.LENGTH_SHORT).show();
         setColorsOnButtons();
 
         // start timer
