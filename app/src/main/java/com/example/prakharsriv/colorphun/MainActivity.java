@@ -181,16 +181,16 @@ public class MainActivity extends Activity {
 
     private void endGame() {
         gameStart = false;
-        String popMsg = "You scored: " + points + " points";
 
-        final CPScoreManager scoreManager = new CPScoreManager(this);
-        if (points > 0 && scoreManager.newTopScore(points, level)) {
-            scoreManager.addScore(points, level);
-            popMsg = "New Top Score! " + popMsg;
-        }
+        // PERSIST points
+        // Send points to another activity
+        Intent intent = new Intent(this, GameOverActivity.class);
+        intent.putExtra("points", points);
+        intent.putExtra("level", level);
+        startActivity(intent);
 
-        resetGame();
-        startActivity(new Intent(this, GameOverActivity.class));
+        // finish main game activity
+        finish();
     }
 
     private void calculatePoints(View clickedView) {

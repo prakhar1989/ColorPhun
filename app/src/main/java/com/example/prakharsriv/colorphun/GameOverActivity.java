@@ -1,10 +1,11 @@
 package com.example.prakharsriv.colorphun;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -32,5 +33,18 @@ public class GameOverActivity extends Activity {
         bestBox.setTypeface(avenir_black);
         bestLabel.setTypeface(avenir_book);
         replayBtn.setTypeface(avenir_book);
+
+        Bundle bundle = getIntent().getExtras();
+        int points = bundle.getInt("points");
+        int level = bundle.getInt("level");
+
+        Log.i("LOGGER", "Points: " + points);
+
+        pointsBox.setText(String.format("%03d", points));
+        levelIndicator.setText("Level " + Integer.toString(level));
+    }
+
+    public void playGame(View view) {
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
