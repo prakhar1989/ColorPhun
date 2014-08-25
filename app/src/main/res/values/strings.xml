@@ -20,5 +20,6 @@
     <string name="tagline3">GAME</string>
     <string name="title_activity_game_over">GameOverActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="preference_file_key">com.example.prakharsriv.colorphun.PREFERENCES_FILE</string>
 
 </resources>

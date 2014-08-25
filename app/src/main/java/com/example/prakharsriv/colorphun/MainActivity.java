@@ -3,8 +3,9 @@ package com.example.prakharsriv.colorphun;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.Activity;
-import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -17,7 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.prakharsriv.colorphun.util.BetterColor;
-import scoreHandlers.CPScoreManager;
 
 public class MainActivity extends Activity {
 
@@ -66,7 +66,6 @@ public class MainActivity extends Activity {
 
         // initialize the crew
         resetGame();
-
 
         // setting up listeners on both buttons
         topBtn.setOnClickListener(new View.OnClickListener() {
@@ -182,11 +181,24 @@ public class MainActivity extends Activity {
     private void endGame() {
         gameStart = false;
 
-        // PERSIST points
-        // Send points to another activity
+        // PERSIST points in shared preferences
+        SharedPreferences preferences = this.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        int highScore = preferences.getInt("HIGHSCORE", 0);
+        // update the highscore
+        if (points > highScore) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt("HIGHSCORE", points);
+            editor.commit();
+            highScore = points;
+        }
+
+        // Send data to another activity
         Intent intent = new Intent(this, GameOverActivity.class);
         intent.putExtra("points", points);
         intent.putExtra("level", level);
+        intent.putExtra("best", highScore);
         startActivity(intent);
 
         // finish main game activity

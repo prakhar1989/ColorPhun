@@ -33,15 +33,18 @@ public class GameOverActivity extends Activity {
         bestLabel.setTypeface(avenir_book);
         replayBtn.setTypeface(avenir_book);
 
-        // fetching and getting points
+        // fetching and setting data
         Bundle bundle = getIntent().getExtras();
         int points = bundle.getInt("points");
         int level = bundle.getInt("level");
+        int best = bundle.getInt("best");
         pointsBox.setText(String.format("%03d", points));
+        bestBox.setText(String.format("%03d", best));
         levelIndicator.setText("Level " + Integer.toString(level));
     }
 
     public void playGame(View view) {
         startActivity(new Intent(this, MainActivity.class));
+        // TODO: Should I add finish?
     }
 }
