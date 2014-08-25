@@ -45,6 +45,6 @@ public class GameOverActivity extends Activity {
 
     public void playGame(View view) {
         startActivity(new Intent(this, MainActivity.class));
-        // TODO: Should I add finish?
+        finish();
     }
 }
