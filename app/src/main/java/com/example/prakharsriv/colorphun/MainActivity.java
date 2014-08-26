@@ -132,22 +132,17 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onPause(){
-        super.onPause();
-        gameStart = false;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        gameStart = true;
+    protected void onRestart() {
+        super.onRestart();
+        endGame();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        this.finish();
+        gameStart = false;
     }
+
 
     private void setColorsOnButtons() {
         int[] colorPair = getRandomColor();
