@@ -9,10 +9,12 @@
         android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
             android:name=".HomeScreenActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
             <intent-filter>
@@ -23,7 +25,8 @@
         </activity>
         <activity
             android:name=".GameOverActivity"
-            android:label="@string/title_activity_game_over" >
+            android:label="@string/title_activity_game_over"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 </manifest>
