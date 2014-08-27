@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ public class HomeScreenActivity extends Activity {
 
             ValueAnimator bounceAnim = getBounceAnimator();
             ValueAnimator fadeAnim = getFadeAnimator();
-            bounceAnim.setDuration(500);
+            bounceAnim.setDuration(800);
             fadeAnim.setDuration(1000);
 
             bounceAnim.addListener(new Animator.AnimatorListener() {
@@ -94,6 +95,7 @@ public class HomeScreenActivity extends Activity {
 
     ValueAnimator getBounceAnimator() {
         ValueAnimator anim = ValueAnimator.ofFloat(0f, 1f);
+        anim.setInterpolator(new BounceInterpolator());
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {

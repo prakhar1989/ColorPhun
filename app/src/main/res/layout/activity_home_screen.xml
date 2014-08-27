@@ -8,9 +8,9 @@
         android:src="@drawable/logo"
         android:layout_width="340dp"
         android:id="@+id/logo"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="90dp"
         android:layout_gravity="center_horizontal"
-        android:layout_height="wrap_content" />
+        android:layout_height="280dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -48,7 +48,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/play_btn2"
+        android:background="@drawable/play_button"
         android:onClick="playGame" />
 
+    <!--android:background="@drawable/play_btn2"-->
 </LinearLayout>
