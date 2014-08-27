@@ -1,5 +1,6 @@
 package com.example.prakharsriv.colorphun;
 
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
@@ -26,6 +27,7 @@ public class GameOverActivity extends Activity {
         pointsBox = (TextView) findViewById(R.id.points_box);
         TextView bestLabel = (TextView) findViewById(R.id.best_label);
         bestBox = (TextView) findViewById(R.id.best_box);
+        TextView highScoreText = (TextView) findViewById(R.id.highscore_txt);
         Button replayBtn = (Button) findViewById(R.id.replay_btn);
 
         // setting up typeface
@@ -38,6 +40,7 @@ public class GameOverActivity extends Activity {
         bestBox.setTypeface(avenir_black);
         bestLabel.setTypeface(avenir_book);
         replayBtn.setTypeface(avenir_book);
+        highScoreText.setTypeface(avenir_black);
 
         // fetching and setting data
         Bundle bundle = getIntent().getExtras();
@@ -48,6 +51,13 @@ public class GameOverActivity extends Activity {
         bestBox.setText(String.format("%03d", best));
         levelIndicator.setText("Level " + Integer.toString(level));
 
+        // show high score if the highscore matches
+        if (best == points) {
+            highScoreText.setVisibility(View.VISIBLE);
+        } else {
+            highScoreText.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     @Override
@@ -56,11 +66,12 @@ public class GameOverActivity extends Activity {
             ValueAnimator pointsAnim = getCounterAnimator(pointsBox, points);
             pointsAnim.setDuration(1200);
 
-            ValueAnimator gameOverAnim = getSlidingAnimator();
-            gameOverAnim.setDuration(500);
+            ObjectAnimator anim = getHeightAnimator();
+            anim.setTarget(gameOverText);
+            anim.setInterpolator(new BounceInterpolator());
+            anim.setDuration(600);
 
-            // start animations
-            gameOverAnim.start();
+            anim.start();
             pointsAnim.start();
         }
     }
@@ -78,16 +89,8 @@ public class GameOverActivity extends Activity {
         return anim;
     }
 
-    ValueAnimator getSlidingAnimator() {
-        ValueAnimator anim = ValueAnimator.ofFloat(0, 1);
-        anim.setInterpolator(new BounceInterpolator());
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                gameOverText.setY(130 * valueAnimator.getAnimatedFraction());
-            }
-        });
-        return anim;
+    ObjectAnimator getHeightAnimator() {
+        return ObjectAnimator.ofFloat(this, "Y", 0, 130);
     }
 
     public void playGame(View view) {

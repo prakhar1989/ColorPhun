@@ -46,9 +46,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="New High Score!"
+        android:textColor="@color/red"
+        android:id="@+id/highscore_txt"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:background="@drawable/border"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
