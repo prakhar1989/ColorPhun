@@ -86,16 +86,12 @@
 
     <Button
         android:id="@+id/replay_btn"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/retry_game"
         android:textSize="15dp"
+        android:background="@drawable/replay_button"
         android:onClick="playGame"
-        android:background="@color/red"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
