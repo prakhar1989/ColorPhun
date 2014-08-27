@@ -7,6 +7,7 @@
     <ImageView
         android:src="@drawable/logo"
         android:layout_width="340dp"
+        android:id="@+id/logo"
         android:layout_marginTop="80dp"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content" />

@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.prakharsriv.colorphun.util.BetterColor;
 
+import java.util.Arrays;
+import java.util.Random;
+
 public class MainActivity extends Activity {
 
     private Button topBtn, bottomBtn;
@@ -93,7 +96,6 @@ public class MainActivity extends Activity {
         levelAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.level_animations);
         levelAnim.setTarget(levelTextView);
 
-
         // setting up the game loop
         runnable = new Runnable() {
             @Override
@@ -142,7 +144,6 @@ public class MainActivity extends Activity {
         super.onStop();
         gameStart = false;
     }
-
 
     private void setColorsOnButtons() {
         int[] colorPair = getRandomColor();
