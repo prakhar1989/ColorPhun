@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class GameOverActivity extends Activity {
 
     private int points, best;
-    private TextView gameOverText, pointsBox, bestBox;
+    private TextView gameOverText, pointsBox, bestBox, highScoreText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class GameOverActivity extends Activity {
         pointsBox = (TextView) findViewById(R.id.points_box);
         TextView bestLabel = (TextView) findViewById(R.id.best_label);
         bestBox = (TextView) findViewById(R.id.best_box);
-        TextView highScoreText = (TextView) findViewById(R.id.highscore_txt);
+        highScoreText = (TextView) findViewById(R.id.highscore_txt);
         Button replayBtn = (Button) findViewById(R.id.replay_btn);
 
         // setting up typeface
@@ -66,10 +66,16 @@ public class GameOverActivity extends Activity {
             ValueAnimator pointsAnim = getCounterAnimator(pointsBox, points);
             pointsAnim.setDuration(1200);
 
-            ObjectAnimator anim = getHeightAnimator();
-            anim.setTarget(gameOverText);
+            ObjectAnimator anim = ObjectAnimator.ofFloat(gameOverText, "Y", 0, 130);
             anim.setInterpolator(new BounceInterpolator());
             anim.setDuration(600);
+
+            // animate high score text
+            if (best == points) {
+                ObjectAnimator highScoreAnim = ObjectAnimator.ofFloat(highScoreText, "alpha", 0f, 1f);
+                highScoreAnim.setDuration(600);
+                highScoreAnim.start();
+            }
 
             anim.start();
             pointsAnim.start();
@@ -87,10 +93,6 @@ public class GameOverActivity extends Activity {
             }
         });
         return anim;
-    }
-
-    ObjectAnimator getHeightAnimator() {
-        return ObjectAnimator.ofFloat(this, "Y", 0, 130);
     }
 
     public void playGame(View view) {
