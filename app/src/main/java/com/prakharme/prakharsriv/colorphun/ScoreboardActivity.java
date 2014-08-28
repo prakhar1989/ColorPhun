@@ -1,4 +1,4 @@
-package com.example.prakharsriv.colorphun;
+package com.prakharme.prakharsriv.colorphun;
 
 import android.app.Activity;
 import android.os.Bundle;

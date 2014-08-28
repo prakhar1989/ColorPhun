@@ -1,4 +1,4 @@
-package com.example.prakharsriv.colorphun;
+package com.prakharme.prakharsriv.colorphun;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

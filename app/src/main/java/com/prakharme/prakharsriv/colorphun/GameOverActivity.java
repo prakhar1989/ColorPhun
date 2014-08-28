@@ -1,4 +1,4 @@
-package com.example.prakharsriv.colorphun;
+package com.prakharme.prakharsriv.colorphun;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class GameOverActivity extends Activity {
 
     private int points, best;
-    private TextView gameOverText, pointsBox, bestBox, highScoreText;
+    private TextView gameOverText, pointsBox, highScoreText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class GameOverActivity extends Activity {
         TextView levelIndicator = (TextView) findViewById(R.id.level_indicator);
         pointsBox = (TextView) findViewById(R.id.points_box);
         TextView bestLabel = (TextView) findViewById(R.id.best_label);
-        bestBox = (TextView) findViewById(R.id.best_box);
+        TextView bestBox = (TextView) findViewById(R.id.best_box);
         highScoreText = (TextView) findViewById(R.id.highscore_txt);
         Button replayBtn = (Button) findViewById(R.id.replay_btn);
 

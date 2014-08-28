@@ -1,4 +1,4 @@
-package com.example.prakharsriv.colorphun;
+package com.prakharme.prakharsriv.colorphun;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,8 +6,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 
 public class GameOverPopup extends DialogFragment {
 

@@ -10,7 +10,7 @@ RandomColor: https://github.com/davidmerfield/randomColor
 Author: Prakhar Srivastav
 Usage: BetterColor.getColor() -> Returns float[] of H, S, V
  */
-package com.example.prakharsriv.colorphun.util;
+package com.prakharme.prakharsriv.colorphun.util;
 
 import java.util.HashMap;
 import java.util.Random;

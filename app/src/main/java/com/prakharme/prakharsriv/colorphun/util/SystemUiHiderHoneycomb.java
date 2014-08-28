@@ -1,4 +1,4 @@
-package com.example.prakharsriv.colorphun.util;
+package com.prakharme.prakharsriv.colorphun.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
