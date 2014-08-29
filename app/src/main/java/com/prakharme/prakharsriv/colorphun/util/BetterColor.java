@@ -1,192 +1,169 @@
-/*
-Better Color - A simple library for generating pleasing pastel colors.
-
-This is a Java port of the wonderful javascript color library - randomColor by David Merfield.
-BetterColor at the moment, just supports generating colors without any other options that are
-provided in the original library. I cherry-picked the API which was useful to me. In future, I might
-get around to making a complete port :)
-
-RandomColor: https://github.com/davidmerfield/randomColor
-Author: Prakhar Srivastav
-Usage: BetterColor.getColor() -> Returns float[] of H, S, V
- */
 package com.prakharme.prakharsriv.colorphun.util;
 
-import java.util.HashMap;
 import java.util.Random;
 
 public class BetterColor {
 
-    // NESTED CLASS
-    public static class ColorInfo {
-        private int[] hueRange;
-        private String name;
-        private int[][] lowerBounds;
-        private int[] saturationRange;
-        private int[] brightnessRange;
+    private static String[] colorList = {
+            "#1391FF",
+            "#d9881b",
+            "#00AAAA",
+            "#00e598",
+            "#006e49",
+            "#804500",
+            "#ffa012",
+            "#0000FF",
+            "#8A2BE2",
+            "#4d1284",
+            "#330c57",
+            "#A52A2A",
+            "#cc3636",
+            "#c88937",
+            "#5F9EA0",
+            "#467475",
+            "#6edd00",
+            "#D2691E",
+            "#fa4300",
+            "#c73500",
+            "#a52c00",
+            "#ff5a1d",
+            "#6495ED",
+            "#fecb00",
+            "#DC143C",
+            "#00008B",
+            "#008B8B",
+            "#B8860B",
+            "#f1b216",
+            "#A9A9A9",
+            "#006400",
+            "#00b900",
+            "#BDB76B",
+            "#8B008B",
+            "#cf00cf",
+            "#360036",
+            "#556B2F",
+            "#FF8C00",
+            "#9932CC",
+            "#8B0000",
+            "#ff0303",
+            "#d95224",
+            "#8FBC8F",
+            "#5c9a5c",
+            "#483D8B",
+            "#6457b5",
+            "#2F4F4F",
+            "#00CED1",
+            "#9400D3",
+            "#f10082",
+            "#00BFFF",
+            "#696969",
+            "#1E90FF",
+            "#B22222",
+            "#ffab02",
+            "#2fc22f",
+            "#228B22",
+            "#bb00bb",
+            "#FF00FF",
+            "#00004e",
+            "#FFD700",
+            "#DAA520",
+            "#8eea00",
+            "#00ce00",
+            "#00ce00",
+            "#CD5C5C",
+            "#bc3a3a",
+            "#4B0082",
+            "#4a4adb",
+            "#20209f",
+            "#74eb00",
+            "#ADD8E6",
+            "#6cb9d2",
+            "#F08080",
+            "#00f1f1",
+            "#e6e61b",
+            "#64e764",
+            "#ff3f5c",
+            "#ff5714",
+            "#be3600",
+            "#471400",
+            "#20B2AA",
+            "#87CEFA",
+            "#778899",
+            "#7497c5",
+            "#4874ad",
+            "#00FF00",
+            "#00CC00",
+            "#32CD32",
+            "#ca7928",
+            "#FF00FF",
+            "#440044",
+            "#800000",
+            "#66CDAA",
+            "#0000CD",
+            "#78248d",
+            "#BA55D3",
+            "#6334bf",
+            "#9370D8",
+            "#3CB371",
+            "#2c15b9",
+            "#7B68EE",
+            "#00e990",
+            "#48D1CC",
+            "#C71585",
+            "#191970",
+            "#f21800",
+            "#ffb93e",
+            "#4f3200",
+            "#000080",
+            "#808000",
+            "#6B8E23",
+            "#94c430",
+            "#DA70D6",
+            "#b52fb0",
+            "#09e009",
+            "#AFEEEE",
+            "#5bdcdc",
+            "#c93b6b",
+            "#D87093",
+            "#ffb53c",
+            "#ffae2b",
+            "#FFDAB9",
+            "#CD853F",
+            "#ba7430",
+            "#c00022",
+            "#DDA0DD",
+            "#b541b5",
+            "#B0E0E6",
+            "#3db2c0",
+            "#800080",
+            "#663399",
+            "#FF0000",
+            "#9a5c5c",
+            "#4169E1",
+            "#8B4513",
+            "#f73620",
+            "#ef7711",
+            "#2E8B57",
+            "#3fbe77",
+            "#ff7311",
+            "#A0522D",
+            "#24a3d7",
+            "#6A5ACD",
+            "#708090",
+            "#830000",
+            "#00cc66",
+            "#D2B48C",
+            "#008080",
+            "#9e609e",
+            "#f12500",
+            "#21ccbb",
+            "#db1edb",
+            "#e19d1e",
+            "#9ACD32"
+    };
 
-        public ColorInfo(String name, int[] hueRange, int[][] lowerBounds, int[] saturationRange, int[] brightnessRange) {
-            this.name = name;
-            this.brightnessRange = brightnessRange;
-            this.hueRange = hueRange;
-            this.lowerBounds = lowerBounds;
-            this.saturationRange = saturationRange;
-        }
-
-        public int[] getHueRange(){
-            return this.hueRange;
-        }
-
-        public int[] getSaturationRange() {
-            return this.saturationRange;
-        }
-
-        public int[][] getLowerBounds() {
-            return this.lowerBounds;
-        }
+    public static String getColor() {
+        Random random = new Random();
+        return colorList[random.nextInt(colorList.length)];
     }
-
-    private static HashMap<String, ColorInfo> colorDictionary;
-
-    private static boolean removeHue(int hue) {
-        return (hue >= 150 && hue <= 180) || (hue >= 55 && hue <= 70);
-    }
-
-    public static float[] getColor() {
-
-        int H, S, V;
-        loadColorDictionary();
-
-        do  {
-            H = pickHue();
-            S = pickSaturation(H);
-            V = pickBrightness(H, S);
-        } while (S == -1 || V == 0 || removeHue(H));
-
-        return new float[] {(float) H, (float) S, (float) V};
-    }
-
-    private static void loadColorDictionary() {
-        colorDictionary = new HashMap<String, ColorInfo>();
-        defineColor("RED", new int[] {-26,18},
-                new int[][] { new int[] {20,100}, new int[] {30,92}, new int[] {40,89}, new int[] {50,85},
-                        new int[] {60,78}, new int[] {70,70}, new int[] {80,60}, new int[] {90,55}, new int[] {100,50} }
-        );
-        defineColor("ORANGE", new int[] {19,46},
-                new int[][] { new int[] {20,100}, new int[] {30,93}, new int[] {40,88},
-                        new int[] {50,86}, new int[] {60,85}, new int[] {70,70}, new int[] {100,70} }
-        );
-        defineColor("YELLOW", new int[] {47,62},
-                new int[][] { new int[] {25,100}, new int[] {40,94}, new int[] {50,89}, new int[] {60,86},
-                        new int[] {70,84}, new int[] {80,82}, new int[] {90,80}, new int[] {100,75} }
-        );
-        defineColor("GREEN", new int[] {63,178},
-                new int[][] { new int[] {30,100}, new int[] {40,90}, new int[] {50,85}, new int[] {60,81},
-                        new int[] {70,74}, new int[] {80,64}, new int[] {90,50}, new int[] {100,40} }
-        );
-        defineColor("BLUE", new int[] {179,257},
-                new int[][] { new int[] {20,100}, new int[] {30,86}, new int[] {40,80}, new int[] {50,74},
-                        new int[] {60,60}, new int[] {70,52}, new int[] {80,44}, new int[] {90,39}, new int[] {100,35} }
-        );
-        defineColor("PURPLE", new int[] {258,282},
-                new int[][] { new int[] {20,100}, new int[] {30,87}, new int[] {40,79}, new int[] {50,70},
-                        new int[] {60,65}, new int[] {70,59}, new int[] {80,52}, new int[] {90,45}, new int[] {100,42} }
-        );
-        defineColor("PINK", new int[] {283,334},
-                new int[][] { new int[] {20,100}, new int[] {30,90}, new int[] {40,86}, new int[] {60,84},
-                        new int[] {80,80}, new int[] {90,75}, new int[] {100,73} }
-        );
-    }
-
-    private static void defineColor(String name, int[] hueRange, int[][] lowerBounds) {
-        int sMin = lowerBounds[0][0];
-        int sMax = lowerBounds[lowerBounds.length - 1][0];
-        int bMin = lowerBounds[lowerBounds.length - 1][1];
-        int bMax = lowerBounds[0][1];
-
-        int[] saturationRange = {sMin, sMax};
-        int[] brightnessRange = {bMin, bMax};
-
-        ColorInfo colorInfo = new ColorInfo(name, hueRange, lowerBounds, saturationRange, brightnessRange);
-        colorDictionary.put(name, colorInfo);
-    }
-
-    private static int randomWithin(int start, int end) {
-        Random randomGenerator = new Random();
-        return start + randomGenerator.nextInt(end + 1 - start);
-    }
-
-    private static int pickHue() {
-        return randomWithin(0, 360);
-    }
-
-    private static boolean isLightRange(int hue) {
-        return (hue >= 55 && hue <= 110) || (hue >= 145 && hue <= 180);
-    }
-
-    private static int pickSaturation(int hue) {
-        if (isLightRange(hue)) {
-            return randomWithin(60, 80);
-        }
-        int saturationRange[] = getSaturationRange(hue);
-        if (saturationRange != null) {
-            return randomWithin(saturationRange[1] - 10, saturationRange[1]);
-        }
-        return -1;
-    }
-
-    private static int pickBrightness(int hue, int saturation) {
-        if (isLightRange(hue)) {
-            return randomWithin(10, 20);
-        }
-        int bMin = getMinimumBrightness(hue, saturation);
-        int bMax = bMin + 20;
-        return randomWithin(bMin, bMax);
-    }
-
-    private static int getMinimumBrightness(int hue, int saturation) {
-        ColorInfo colorInfo = getColorInfo(hue);
-        if (colorInfo != null) {
-            int[][] lowerBounds = colorInfo.getLowerBounds();
-
-            for (int i = 0; i < lowerBounds.length; i++) {
-                int s1 = lowerBounds[i][0];
-                int v1 = lowerBounds[i][1];
-                int s2 = lowerBounds[i+1][0];
-                int v2 = lowerBounds[i+1][1];
-
-                if (saturation >= s1 && saturation <= s2) {
-                    int m = (v2 - v1) / (s2 - s1);
-                    int b = v1 - m * s1;
-
-                    return m * saturation + b;
-                }
-            }
-        }
-        return 0;
-    }
-
-    private static int[] getSaturationRange(int hue) {
-        ColorInfo colorInfo = getColorInfo(hue);
-        if (colorInfo != null) {
-            return colorInfo.getSaturationRange();
-        }
-        return null;
-    }
-
-    private static ColorInfo getColorInfo(int hue) {
-        if (hue >= 334 && hue <= 360) {
-            hue -= 360;
-        }
-
-        for (String colorName : colorDictionary.keySet()) {
-            ColorInfo colorInfo = colorDictionary.get(colorName);
-            int[] hueRange = colorInfo.getHueRange();
-            if (hue >= hueRange[0] && hue <= hueRange[1]) {
-                return colorInfo;
-            }
-        }
-        return null; // color not found
-    }
-
 }
