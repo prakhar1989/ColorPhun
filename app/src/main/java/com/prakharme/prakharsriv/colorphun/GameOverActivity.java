@@ -16,6 +16,7 @@ public class GameOverActivity extends Activity {
 
     private int points, best;
     private boolean newScore;
+    private boolean shown = false;
     private TextView gameOverText, pointsBox, highScoreText;
 
     @Override
@@ -66,7 +67,8 @@ public class GameOverActivity extends Activity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        if (hasFocus) {
+        if (hasFocus && !shown) {
+            shown = true;
             ValueAnimator pointsAnim = getCounterAnimator(pointsBox, points);
             pointsAnim.setDuration(1200);
 
