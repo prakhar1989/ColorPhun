@@ -173,18 +173,21 @@ public class MainActivity extends Activity {
 
     private void endGame() {
         gameStart = false;
+        boolean newScore = false;
 
         // PERSIST points in shared preferences
         SharedPreferences preferences = this.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
         int highScore = preferences.getInt("HIGHSCORE", 0);
-        // update the highscore
+
+        // update the high-score
         if (points > highScore) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt("HIGHSCORE", points);
-            editor.commit();
+            editor.apply();
             highScore = points;
+            newScore = true;
         }
 
         // Send data to another activity
@@ -192,6 +195,7 @@ public class MainActivity extends Activity {
         intent.putExtra("points", points);
         intent.putExtra("level", level);
         intent.putExtra("best", highScore);
+        intent.putExtra("newScore", newScore);
         startActivity(intent);
 
         // finish main game activity
@@ -230,11 +234,7 @@ public class MainActivity extends Activity {
     // generates a pair of colors separated by alpha
     private int[] getRandomColor() {
 
-//        int color = Color.HSVToColor(BetterColor.getColor());
-//        int red = Color.red(color);
-//        int green = Color.green(color);
-//        int blue = Color.blue(color);
-
+        // List of colors to cycle through
         String[] colorList = {
                 "#1391FF",
                 "#d9881b",
@@ -395,7 +395,6 @@ public class MainActivity extends Activity {
         Random random = new Random();
         int index = random.nextInt(colorList.length);
         int color = Color.parseColor(colorList[index]);
-        Log.i("COLORPHUN", colorList[index]);
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);

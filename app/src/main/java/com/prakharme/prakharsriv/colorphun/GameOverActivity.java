@@ -15,6 +15,7 @@ import android.widget.TextView;
 public class GameOverActivity extends Activity {
 
     private int points, best;
+    private boolean newScore;
     private TextView gameOverText, pointsBox, highScoreText;
 
     @Override
@@ -42,17 +43,20 @@ public class GameOverActivity extends Activity {
         replayBtn.setTypeface(avenir_book);
         highScoreText.setTypeface(avenir_black);
 
-        // fetching and setting data
+        // get data
         Bundle bundle = getIntent().getExtras();
         points = bundle.getInt("points");
         int level = bundle.getInt("level");
         best = bundle.getInt("best");
+        newScore = bundle.getBoolean("newScore");
+
+        // set data
         pointsBox.setText(String.format("%03d", points));
         bestBox.setText(String.format("%03d", best));
         levelIndicator.setText("Level " + Integer.toString(level));
 
-        // show high score if the highscore matches
-        if (best == points) {
+        // show high score
+        if (newScore) {
             highScoreText.setVisibility(View.VISIBLE);
         } else {
             highScoreText.setVisibility(View.INVISIBLE);
@@ -71,7 +75,7 @@ public class GameOverActivity extends Activity {
             anim.setDuration(600);
 
             // animate high score text
-            if (best == points) {
+            if (newScore) {
                 ObjectAnimator highScoreAnim = ObjectAnimator.ofFloat(highScoreText, "alpha", 0f, 1f);
                 highScoreAnim.setDuration(600);
                 highScoreAnim.start();

@@ -23,6 +23,7 @@
     <string name="preference_file_key">com.example.prakharsriv.colorphun.PREFERENCES_FILE</string>
     <string name="APP_ID">327910424750</string>
     <string name="LEADERBOARD_ID">CgkIroHwx8UJEAIQAQ</string>
-    <string name="highscore">Congrats! New High Score!</string>
+    <string name="highscore">New High Score!</string>
+    <string name="best_label">Best</string>
 
 </resources>

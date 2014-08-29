@@ -51,6 +51,4 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/play_button"
         android:onClick="playGame" />
-
-    <!--android:background="@drawable/play_btn2"-->
 </LinearLayout>
