@@ -119,11 +119,11 @@ public class HomeScreenActivity extends BaseGameActivity {
 
     @Override
     public void onSignInFailed() {
-        Log.i("Sign in", "Sign in succeeded");
+        Log.i("Sign in", "Sign in failed");
     }
 
     @Override
     public void onSignInSucceeded() {
-        Log.i("Sign in", "Sign in failed");
+        Log.i("Sign in", "Sign in succeeded");
     }
 }
