@@ -12,12 +12,12 @@ import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.example.games.basegameutils.BaseGameActivity;
 
-public class HomeScreenActivity extends BaseGameActivity {
+public class HomeScreenActivity extends BaseGameActivity implements View.OnClickListener {
 
     private Button playGameButton;
+    private View signInButton, signOutButton;
     private ImageView logoView;
     private TextView taglineTextView1, taglineTextView2, taglineTextView3;
 
@@ -25,6 +25,11 @@ public class HomeScreenActivity extends BaseGameActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        signInButton = findViewById(R.id.sign_in_button);
+        signOutButton = findViewById(R.id.sign_out_button);
+        signInButton.setOnClickListener(this);
+        signOutButton.setOnClickListener(this);
 
         taglineTextView1 = (TextView) findViewById(R.id.tagline_text);
         taglineTextView2 = (TextView) findViewById(R.id.tagline_text2);
@@ -120,10 +125,26 @@ public class HomeScreenActivity extends BaseGameActivity {
     @Override
     public void onSignInFailed() {
         Log.i("Sign in", "Sign in failed");
+        signInButton.setVisibility(View.VISIBLE);
+        signOutButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onSignInSucceeded() {
         Log.i("Sign in", "Sign in succeeded");
+        signInButton.setVisibility(View.INVISIBLE);
+        signOutButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.sign_in_button) {
+            beginUserInitiatedSignIn();
+        } else if (view.getId() == R.id.sign_out_button) {
+            signOut();
+
+            signInButton.setVisibility(View.VISIBLE);
+            signOutButton.setVisibility(View.INVISIBLE);
+        }
     }
 }

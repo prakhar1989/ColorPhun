@@ -51,4 +51,20 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/play_button"
         android:onClick="playGame" />
+
+    <!-- sign-in button -->
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- sign-out button -->
+    <Button
+        android:id="@+id/sign_out_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_out"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
 </LinearLayout>
