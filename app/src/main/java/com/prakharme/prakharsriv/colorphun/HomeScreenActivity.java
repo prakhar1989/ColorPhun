@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.example.games.basegameutils.BaseGameActivity;
+import com.google.example.games.basegameutils.GameHelper;
 
 public class HomeScreenActivity extends BaseGameActivity implements View.OnClickListener {
 
@@ -30,6 +31,9 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
         signOutButton = findViewById(R.id.sign_out_button);
         signInButton.setOnClickListener(this);
         signOutButton.setOnClickListener(this);
+
+        // disable auto-login at the start of the game
+        getGameHelper().setMaxAutoSignInAttempts(0);
 
         taglineTextView1 = (TextView) findViewById(R.id.tagline_text);
         taglineTextView2 = (TextView) findViewById(R.id.tagline_text2);
