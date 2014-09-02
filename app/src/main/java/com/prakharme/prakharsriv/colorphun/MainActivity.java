@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.prakharme.prakharsriv.colorphun.util.BetterColor;
 
-
 public class MainActivity extends Activity {
 
     private Button topBtn, bottomBtn;

@@ -28,5 +28,11 @@
             android:label="@string/title_activity_game_over"
             android:screenOrientation="portrait" >
         </activity>
+
+        <!-- FOR GOOGLE PLAY SERVICES -->
+        <meta-data android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/APP_ID" />
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
     </application>
 </manifest>

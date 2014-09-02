@@ -3,17 +3,19 @@ package com.prakharme.prakharsriv.colorphun;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class HomeScreenActivity extends Activity {
+import com.google.example.games.basegameutils.BaseGameActivity;
+
+public class HomeScreenActivity extends BaseGameActivity {
 
     private Button playGameButton;
     private ImageView logoView;
@@ -113,5 +115,15 @@ public class HomeScreenActivity extends Activity {
 
     public void playGame(View view) {
         startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    public void onSignInFailed() {
+        Log.i("Sign in", "Sign in succeeded");
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        Log.i("Sign in", "Sign in failed");
     }
 }
