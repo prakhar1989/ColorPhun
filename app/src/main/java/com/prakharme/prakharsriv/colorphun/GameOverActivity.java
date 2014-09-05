@@ -2,19 +2,14 @@ package com.prakharme.prakharsriv.colorphun;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.BaseGameActivity;
 
@@ -77,11 +72,10 @@ public class GameOverActivity extends BaseGameActivity {
         if (!isSignedIn()) {
             return;
         }
-        if (points > 0) {
-            Log.i("Score", "Logging score: " + points);
+        if (best > 0) {
             // submit score to play services
             Games.Leaderboards.submitScore(getApiClient(),
-                    getString(R.string.LEADERBOARD_ID) , points);
+                    getString(R.string.LEADERBOARD_ID) , best);
         }
     }
 
@@ -92,10 +86,6 @@ public class GameOverActivity extends BaseGameActivity {
             ValueAnimator pointsAnim = getCounterAnimator(pointsBox, points);
             pointsAnim.setDuration(1200);
 
-            ObjectAnimator anim = ObjectAnimator.ofFloat(gameOverText, "Y", 0, 130);
-            anim.setInterpolator(new BounceInterpolator());
-            anim.setDuration(600);
-
             // animate high score text
             if (newScore) {
                 ObjectAnimator highScoreAnim = ObjectAnimator.ofFloat(highScoreText, "alpha", 0f, 1f);
@@ -103,7 +93,6 @@ public class GameOverActivity extends BaseGameActivity {
                 highScoreAnim.start();
             }
 
-            anim.start();
             pointsAnim.start();
         }
     }

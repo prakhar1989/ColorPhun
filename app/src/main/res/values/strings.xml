@@ -25,4 +25,5 @@
     <string name="highscore">New High Score!</string>
     <string name="best_label">Best</string>
     <string name="sign_out">Sign Out</string>
+    <string name="sign_in">Sign In</string>
 </resources>

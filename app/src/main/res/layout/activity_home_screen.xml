@@ -4,13 +4,37 @@
     android:background="@color/blue_gray"
     android:orientation="vertical">
 
+    <!-- sign-in button -->
+    <!--<com.google.android.gms.common.SignInButton-->
+    <Button
+        android:id="@+id/sign_in_button"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/sign_in"
+        android:background="@drawable/common_signin_btn_text_dark"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- sign-out button -->
+    <Button
+        android:id="@+id/sign_out_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_signin_btn_text_light"
+        android:textColor="@color/red"
+        android:layout_marginTop="20dp"
+        android:textSize="14dp"
+        android:text="@string/sign_out"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
+
     <ImageView
         android:src="@drawable/logo"
         android:layout_width="wrap_content"
         android:layout_height="280dp"
         android:padding="20dp"
         android:id="@+id/logo"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal" />
 
     <LinearLayout
@@ -52,19 +76,4 @@
         android:background="@drawable/play_button"
         android:onClick="playGame" />
 
-    <!-- sign-in button -->
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <!-- sign-out button -->
-    <Button
-        android:id="@+id/sign_out_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_out"
-        android:layout_gravity="center_horizontal"
-        android:visibility="gone" />
 </LinearLayout>

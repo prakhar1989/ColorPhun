@@ -6,14 +6,12 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.example.games.basegameutils.BaseGameActivity;
-import com.google.example.games.basegameutils.GameHelper;
 
 public class HomeScreenActivity extends BaseGameActivity implements View.OnClickListener {
 
@@ -126,15 +124,13 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
     // TODO: Find out the best practices for below events and handle them
     @Override
     public void onSignInFailed() {
-        Log.i("Sign in", "Sign in failed in home");
         signInButton.setVisibility(View.VISIBLE);
-        signOutButton.setVisibility(View.INVISIBLE);
+        signOutButton.setVisibility(View.GONE);
     }
 
     @Override
     public void onSignInSucceeded() {
-        Log.i("Sign in", "Sign in succeeded in home");
-        signInButton.setVisibility(View.INVISIBLE);
+        signInButton.setVisibility(View.GONE);
         signOutButton.setVisibility(View.VISIBLE);
     }
 
@@ -146,7 +142,7 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
             signOut();
 
             signInButton.setVisibility(View.VISIBLE);
-            signOutButton.setVisibility(View.INVISIBLE);
+            signOutButton.setVisibility(View.GONE);
         }
     }
 }
