@@ -32,9 +32,6 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
         signInButton.setOnClickListener(this);
         signOutButton.setOnClickListener(this);
 
-        // disable auto-login at the start of the game
-        getGameHelper().setMaxAutoSignInAttempts(0);
-
         taglineTextView1 = (TextView) findViewById(R.id.tagline_text);
         taglineTextView2 = (TextView) findViewById(R.id.tagline_text2);
         taglineTextView3 = (TextView) findViewById(R.id.tagline_text3);
@@ -126,16 +123,17 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
         startActivity(new Intent(this, MainActivity.class));
     }
 
+    // TODO: Find out the best practices for below events and handle them
     @Override
     public void onSignInFailed() {
-        Log.i("Sign in", "Sign in failed");
+        Log.i("Sign in", "Sign in failed in home");
         signInButton.setVisibility(View.VISIBLE);
         signOutButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onSignInSucceeded() {
-        Log.i("Sign in", "Sign in succeeded");
+        Log.i("Sign in", "Sign in succeeded in home");
         signInButton.setVisibility(View.INVISIBLE);
         signOutButton.setVisibility(View.VISIBLE);
     }

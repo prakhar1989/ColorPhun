@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:background="@color/white_bg"
     android:layout_height="match_parent"
-    android:padding="50dp"
+    android:padding="20dp"
     android:orientation="vertical">
 
     <TextView
@@ -78,11 +78,19 @@
             android:layout_height="wrap_content" />
         </LinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leaderboard"
+        android:layout_gravity="center_horizontal"
+        style="@android:style/Widget.Button.Small"
+        android:onClick="showLeaderboard"/>
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray"/>
 
     <Button

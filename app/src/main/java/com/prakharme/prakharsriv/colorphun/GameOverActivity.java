@@ -6,18 +6,26 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class GameOverActivity extends Activity {
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+import com.google.example.games.basegameutils.BaseGameActivity;
+
+public class GameOverActivity extends BaseGameActivity {
 
     private int points, best;
     private boolean newScore;
     private boolean shown = false;
     private TextView gameOverText, pointsBox, highScoreText;
+
+    final int REQUEST_LEADERBOARD = 4000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +70,19 @@ public class GameOverActivity extends Activity {
         } else {
             highScoreText.setVisibility(View.INVISIBLE);
         }
+    }
 
+
+    void pushAccomplishments() {
+        if (!isSignedIn()) {
+            return;
+        }
+        if (points > 0) {
+            Log.i("Score", "Logging score: " + points);
+            // submit score to play services
+            Games.Leaderboards.submitScore(getApiClient(),
+                    getString(R.string.LEADERBOARD_ID) , points);
+        }
     }
 
     @Override
@@ -104,5 +124,25 @@ public class GameOverActivity extends Activity {
     public void playGame(View view) {
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    public void showLeaderboard(View view) {
+        if (isSignedIn()) {
+            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(),
+                    getString(R.string.LEADERBOARD_ID)), REQUEST_LEADERBOARD);
+        } else {
+            Log.i("Leaderboard", "leaderboard not available");
+        }
+    }
+
+    @Override
+    public void onSignInFailed() {
+        Log.i("Sign in", "Sign in failed in GameOver");
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        Log.i("Sign in", "Sign in succeeded in GameOver");
+        pushAccomplishments();
     }
 }
