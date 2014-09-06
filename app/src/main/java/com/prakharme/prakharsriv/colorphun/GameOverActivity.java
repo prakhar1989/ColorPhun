@@ -223,6 +223,12 @@ public class GameOverActivity extends BaseGameActivity {
         if (level > 6) {
             Games.Achievements.unlock(getApiClient(), getString(R.string.ACHIEVEMENT_IMPOSSIBLE_ID));
         }
+
+        // game count based
+        int timesPlayed = sharedPreferences.getInt("TIMESPLAYED", 0);
+        if (timesPlayed <= 3 && points >= 50) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.ACHIEVEMENT_LUCK_ID));
+        }
     }
 
     // save high score in shared preferences file
