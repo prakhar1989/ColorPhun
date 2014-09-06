@@ -3,7 +3,9 @@ package com.prakharme.prakharsriv.colorphun;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,7 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
     private View signInButton, signOutButton;
     private ImageView logoView;
     private TextView taglineTextView1, taglineTextView2, taglineTextView3;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,12 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
         taglineTextView1.setTypeface(avenir_book);
         taglineTextView2.setTypeface(avenir_book);
         taglineTextView3.setTypeface(avenir_book);
+
+        // get user's preference for sign-in
+        sharedPreferences = this.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        int shouldSignIn = sharedPreferences.getInt("SIGNIN", 1);
+        getGameHelper().setMaxAutoSignInAttempts(shouldSignIn);
     }
 
 
@@ -142,6 +151,11 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
             beginUserInitiatedSignIn();
         } else if (view.getId() == R.id.sign_out_button) {
             signOut();
+
+            // save user's preference for sign-in
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("SIGNIN", 0);
+            editor.apply();
 
             signInButton.setVisibility(View.VISIBLE);
             signOutButton.setVisibility(View.GONE);

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
@@ -131,7 +130,7 @@ public class GameOverActivity extends BaseGameActivity {
             startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(),
                     getString(R.string.LEADERBOARD_ID)), REQUEST_LEADERBOARD);
         } else {
-            Toast.makeText(this, R.string.signin_help, Toast.LENGTH_LONG).show();
+            showAlert(getString(R.string.signin_help_title), getString(R.string.signin_help));
         }
     }
 
@@ -139,7 +138,7 @@ public class GameOverActivity extends BaseGameActivity {
         if (isSignedIn()) {
             startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), REQUEST_ACHIEVEMENTS);
         } else {
-            Toast.makeText(this, R.string.signin_help, Toast.LENGTH_LONG).show();
+            showAlert(getString(R.string.signin_help_title), getString(R.string.signin_help));
         }
 
     }
