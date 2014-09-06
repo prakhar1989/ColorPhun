@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
@@ -53,6 +55,9 @@ public class GameOverActivity extends BaseGameActivity {
         bestLabel.setTypeface(avenir_book);
         replayBtn.setTypeface(avenir_book);
         highScoreText.setTypeface(avenir_black);
+
+        // disallow auto sign-in on this screen
+        getGameHelper().setMaxAutoSignInAttempts(0);
 
         // get data
         Bundle bundle = getIntent().getExtras();
@@ -127,19 +132,17 @@ public class GameOverActivity extends BaseGameActivity {
             startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(),
                     getString(R.string.LEADERBOARD_ID)), REQUEST_LEADERBOARD);
         } else {
-            Log.i("Leaderboard", "leaderboard not available");
+            Toast.makeText(this, R.string.signin_help, Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onSignInFailed() {
-        Log.i("Sign in", "Sign in failed in GameOver");
+        Log.e("SIGN IN", "ERROR Signin in game over");
     }
 
     @Override
     public void onSignInSucceeded() {
-        Log.i("Sign in", "Sign in succeeded in GameOver");
-
         // save scores on the cloud
         pushAccomplishments();
 

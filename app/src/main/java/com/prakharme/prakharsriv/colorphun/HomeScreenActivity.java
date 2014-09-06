@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
@@ -126,6 +127,7 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
     public void onSignInFailed() {
         signInButton.setVisibility(View.VISIBLE);
         signOutButton.setVisibility(View.GONE);
+        Log.e("SIGN IN", "ERROR Signin in home screen");
     }
 
     @Override

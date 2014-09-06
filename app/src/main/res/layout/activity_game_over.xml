@@ -79,9 +79,10 @@
         </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Leaderboard"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/games_controller"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
         style="@android:style/Widget.Button.Small"
         android:onClick="showLeaderboard"/>
@@ -89,7 +90,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray"/>
 
