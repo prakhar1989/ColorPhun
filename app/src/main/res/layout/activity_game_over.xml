@@ -88,13 +88,16 @@
         <Button
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/games_controller"
+            android:background="@drawable/games_leaderboards"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:onClick="showLeaderboard"/>
 
         <Button
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:background="@drawable/games_achievements"
             android:onClick="showAchievements"/>
 
