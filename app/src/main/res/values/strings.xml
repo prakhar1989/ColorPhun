@@ -27,4 +27,14 @@
     <string name="sign_out">Sign Out</string>
     <string name="sign_in">Sign In</string>
     <string name="signin_help">Please sign in to earn achievements and participate in global leaderboards</string>
+    <string name="ACHIEVEMENT_NOVICE_ID">CgkIroHwx8UJEAIQAg</string>
+    <string name="ACHIEVEMENT_LUCK_ID">CgkIroHwx8UJEAIQAw</string>
+    <string name="ACHIEVEMENT_CASUAL_ID">CgkIroHwx8UJEAIQBA</string>
+    <string name="ACHIEVEMENT_CENTURION_ID">CgkIroHwx8UJEAIQBQ</string>
+    <string name="ACHIEVEMENT_DETAILEYE_ID">CgkIroHwx8UJEAIQBg</string>
+    <string name="ACHIEVEMENT_TAPMASTER_ID">CgkIroHwx8UJEAIQCg</string>
+    <string name="ACHIEVEMENT_GODLIKE_ID">CgkIroHwx8UJEAIQCw</string>
+    <string name="ACHIEVEMENT_LONGTIMER_ID">CgkIroHwx8UJEAIQDQ</string>
+    <string name="ACHIEVEMENT_COLORBLIND_ID">CgkIroHwx8UJEAIQDg</string>
+    <string name="ACHIEVEMENT_IMPOSSIBLE_ID">CgkIroHwx8UJEAIQDw</string>
 </resources>
