@@ -2,7 +2,9 @@ package com.prakharme.prakharsriv.colorphun;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +12,12 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesStatusCodes;
+import com.google.android.gms.games.leaderboard.LeaderboardVariant;
+import com.google.android.gms.games.leaderboard.Leaderboards;
 import com.google.example.games.basegameutils.BaseGameActivity;
 
 public class GameOverActivity extends BaseGameActivity {
@@ -132,6 +139,41 @@ public class GameOverActivity extends BaseGameActivity {
     @Override
     public void onSignInSucceeded() {
         Log.i("Sign in", "Sign in succeeded in GameOver");
+
+        // save scores on the cloud
         pushAccomplishments();
+
+        // fetching results from leaderboard and matching scores
+        PendingResult result = Games.Leaderboards.loadCurrentPlayerLeaderboardScore(getApiClient(),
+                getString(R.string.LEADERBOARD_ID), LeaderboardVariant.TIME_SPAN_ALL_TIME,
+                LeaderboardVariant.COLLECTION_PUBLIC);
+
+        result.setResultCallback(new ResultCallback<Leaderboards.LoadPlayerScoreResult>() {
+            @Override
+            public void onResult(Leaderboards.LoadPlayerScoreResult result) {
+                // check if valid score
+                if (result != null
+                        && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()
+                        && result.getScore() != null) {
+
+                    // assign score fetched as best score
+                    updateHighScore((int) result.getScore().getRawScore());
+                }
+            }
+
+        });
+
+    }
+
+    // save high score in shared preferences file
+    private void updateHighScore(int score) {
+        if (score != best && score > 0) {
+            SharedPreferences sharedPreferences = this.getSharedPreferences(
+                    getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("HIGHSCORE", score);
+            editor.apply();
+        }
     }
 }
