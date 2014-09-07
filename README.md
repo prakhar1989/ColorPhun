@@ -9,4 +9,7 @@ ColorPhun is a simple color based Android Game.
 
 ![Image](shot.png)
 
-
+### Features
+- Google Play Services Integration
+- Leaderboards
+- Achievements
