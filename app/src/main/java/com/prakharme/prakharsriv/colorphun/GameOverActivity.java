@@ -121,7 +121,7 @@ public class GameOverActivity extends BaseGameActivity {
     }
 
     public void playGame(View view) {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, MainGameActivity.class));
         finish();
     }
 

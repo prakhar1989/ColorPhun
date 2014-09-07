@@ -128,7 +128,7 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
     }
 
     public void playGame(View view) {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, MainGameActivity.class));
     }
 
     // TODO: Find out the best practices for below events and handle them
