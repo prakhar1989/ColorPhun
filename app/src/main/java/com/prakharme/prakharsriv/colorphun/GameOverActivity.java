@@ -2,22 +2,34 @@ package com.prakharme.prakharsriv.colorphun;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesStatusCodes;
+import com.google.android.gms.games.leaderboard.LeaderboardVariant;
+import com.google.android.gms.games.leaderboard.Leaderboards;
+import com.google.example.games.basegameutils.BaseGameActivity;
 
-public class GameOverActivity extends Activity {
+public class GameOverActivity extends BaseGameActivity {
 
-    private int points, best;
+    private int points, best, level;
     private boolean newScore;
     private boolean shown = false;
     private TextView gameOverText, pointsBox, highScoreText;
+    private SharedPreferences sharedPreferences;
+
+    final int REQUEST_LEADERBOARD = 4000;
+    final int REQUEST_ACHIEVEMENTS = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +56,22 @@ public class GameOverActivity extends Activity {
         replayBtn.setTypeface(avenir_book);
         highScoreText.setTypeface(avenir_black);
 
+        // disallow auto sign-in on this screen
+        getGameHelper().setMaxAutoSignInAttempts(0);
+
+        // set a simple game counter in shared pref
+        sharedPreferences = this.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        int timesPlayed = sharedPreferences.getInt("TIMESPLAYED", 0);
+        editor.putInt("TIMESPLAYED", timesPlayed + 1);
+        editor.apply();
+
         // get data
         Bundle bundle = getIntent().getExtras();
         points = bundle.getInt("points");
-        int level = bundle.getInt("level");
+        level = bundle.getInt("level");
         best = bundle.getInt("best");
         newScore = bundle.getBoolean("newScore");
 
@@ -62,8 +86,8 @@ public class GameOverActivity extends Activity {
         } else {
             highScoreText.setVisibility(View.INVISIBLE);
         }
-
     }
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -72,10 +96,6 @@ public class GameOverActivity extends Activity {
             ValueAnimator pointsAnim = getCounterAnimator(pointsBox, points);
             pointsAnim.setDuration(1200);
 
-            ObjectAnimator anim = ObjectAnimator.ofFloat(gameOverText, "Y", 0, 130);
-            anim.setInterpolator(new BounceInterpolator());
-            anim.setDuration(600);
-
             // animate high score text
             if (newScore) {
                 ObjectAnimator highScoreAnim = ObjectAnimator.ofFloat(highScoreText, "alpha", 0f, 1f);
@@ -83,7 +103,6 @@ public class GameOverActivity extends Activity {
                 highScoreAnim.start();
             }
 
-            anim.start();
             pointsAnim.start();
         }
     }
@@ -104,5 +123,119 @@ public class GameOverActivity extends Activity {
     public void playGame(View view) {
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    public void showLeaderboard(View view) {
+        if (isSignedIn()) {
+            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(),
+                    getString(R.string.LEADERBOARD_ID)), REQUEST_LEADERBOARD);
+        } else {
+            showAlert(getString(R.string.signin_help_title), getString(R.string.signin_help));
+        }
+    }
+
+    public void showAchievements(View view) {
+        if (isSignedIn()) {
+            startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), REQUEST_ACHIEVEMENTS);
+        } else {
+            showAlert(getString(R.string.signin_help_title), getString(R.string.signin_help));
+        }
+
+    }
+
+    @Override
+    public void onSignInFailed() {
+        Log.e("SIGN IN", "ERROR Signin in game over");
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        // save scores on the cloud
+        pushAccomplishments();
+
+        // save achievements
+        setAchievements();
+
+        // fetching results from leaderboard and matching scores
+        PendingResult result = Games.Leaderboards.loadCurrentPlayerLeaderboardScore(getApiClient(),
+                getString(R.string.LEADERBOARD_ID), LeaderboardVariant.TIME_SPAN_ALL_TIME,
+                LeaderboardVariant.COLLECTION_PUBLIC);
+
+        result.setResultCallback(new ResultCallback<Leaderboards.LoadPlayerScoreResult>() {
+            @Override
+            public void onResult(Leaderboards.LoadPlayerScoreResult result) {
+                // check if valid score
+                if (result != null
+                        && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()
+                        && result.getScore() != null) {
+
+                    // assign score fetched as best score
+                    updateHighScore((int) result.getScore().getRawScore());
+                }
+            }
+
+        });
+
+    }
+
+    void pushAccomplishments() {
+        if (!isSignedIn()) {
+            return;
+        }
+        if (best > 0) {
+            // submit score to play services
+            Games.Leaderboards.submitScore(getApiClient(),
+                    getString(R.string.LEADERBOARD_ID) , best);
+        }
+    }
+
+    private void setAchievements() {
+        if (!isSignedIn()) {
+            return;
+        }
+
+        // standard achievements
+        Games.Achievements.unlock(getApiClient(), getString(R.string.ACHIEVEMENT_NOVICE_ID));
+        Games.Achievements.increment(getApiClient(), getString(R.string.ACHIEVEMENT_LONGTIMER_ID), 1);
+
+        // points based
+        if (points <= 20) {
+            Games.Achievements.increment(getApiClient(), getString(R.string.ACHIEVEMENT_COLORBLIND_ID), 1);
+        }
+        if (points >= 100) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.ACHIEVEMENT_CENTURION_ID));
+        }
+
+        // level based
+        if (level >= 3) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.ACHIEVEMENT_CASUAL_ID));
+        }
+        if (level >= 4) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.ACHIEVEMENT_DETAILEYE_ID));
+        }
+        if (level >= 5) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.ACHIEVEMENT_TAPMASTER_ID));
+        }
+        if (level >= 6) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.ACHIEVEMENT_GODLIKE_ID));
+        }
+        if (level > 6) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.ACHIEVEMENT_IMPOSSIBLE_ID));
+        }
+
+        // game count based
+        int timesPlayed = sharedPreferences.getInt("TIMESPLAYED", 0);
+        if (timesPlayed <= 3 && points >= 50) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.ACHIEVEMENT_LUCK_ID));
+        }
+    }
+
+    // save high score in shared preferences file
+    private void updateHighScore(int score) {
+        if (score != best && score > 0) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("HIGHSCORE", score);
+            editor.apply();
+        }
     }
 }

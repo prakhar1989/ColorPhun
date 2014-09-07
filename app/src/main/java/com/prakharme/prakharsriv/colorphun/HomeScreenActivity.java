@@ -3,26 +3,36 @@ package com.prakharme.prakharsriv.colorphun;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.google.example.games.basegameutils.BaseGameActivity;
 
-public class HomeScreenActivity extends Activity {
+public class HomeScreenActivity extends BaseGameActivity implements View.OnClickListener {
 
     private Button playGameButton;
+    private View signInButton, signOutButton;
     private ImageView logoView;
     private TextView taglineTextView1, taglineTextView2, taglineTextView3;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        signInButton = findViewById(R.id.sign_in_button);
+        signOutButton = findViewById(R.id.sign_out_button);
+        signInButton.setOnClickListener(this);
+        signOutButton.setOnClickListener(this);
 
         taglineTextView1 = (TextView) findViewById(R.id.tagline_text);
         taglineTextView2 = (TextView) findViewById(R.id.tagline_text2);
@@ -35,6 +45,12 @@ public class HomeScreenActivity extends Activity {
         taglineTextView1.setTypeface(avenir_book);
         taglineTextView2.setTypeface(avenir_book);
         taglineTextView3.setTypeface(avenir_book);
+
+        // get user's preference for sign-in
+        sharedPreferences = this.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        int shouldSignIn = sharedPreferences.getInt("SIGNIN", 1);
+        getGameHelper().setMaxAutoSignInAttempts(shouldSignIn);
     }
 
 
@@ -113,5 +129,36 @@ public class HomeScreenActivity extends Activity {
 
     public void playGame(View view) {
         startActivity(new Intent(this, MainActivity.class));
+    }
+
+    // TODO: Find out the best practices for below events and handle them
+    @Override
+    public void onSignInFailed() {
+        signInButton.setVisibility(View.VISIBLE);
+        signOutButton.setVisibility(View.GONE);
+        Log.e("SIGN IN", "ERROR Signin in home screen");
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        signInButton.setVisibility(View.GONE);
+        signOutButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.sign_in_button) {
+            beginUserInitiatedSignIn();
+        } else if (view.getId() == R.id.sign_out_button) {
+            signOut();
+
+            // save user's preference for sign-in
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("SIGNIN", 0);
+            editor.apply();
+
+            signInButton.setVisibility(View.VISIBLE);
+            signOutButton.setVisibility(View.GONE);
+        }
     }
 }

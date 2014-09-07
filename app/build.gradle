@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'prakhar'
+            keyAlias 'prakhar srivastav'
             keyPassword 'prakhar'
-            storeFile file('/Users/asrinivasan/Dropbox/android-play/keystore.jks')
+            storeFile file('/Users/asrinivasan/Documents/AndroidstudioProjects/keystore.jks')
             storePassword 'prakhar'
         }
     }
@@ -15,8 +15,9 @@ android {
         applicationId 'com.prakharme.prakharsriv.colorphun'
         minSdkVersion 15
         targetSdkVersion 19
-        versionCode 2
-        versionName '1.0.1'
+        versionCode 5
+        versionName '1.0.4'
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -35,4 +36,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:20.0.0'
+    compile project(':BaseGameUtils')
+    compile 'com.google.android.gms:play-services:5.0.89'
 }
