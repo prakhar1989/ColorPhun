@@ -1,99 +1,53 @@
 package com.prakharme.prakharsriv.colorphun;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.prakharme.prakharsriv.colorphun.util.BetterColor;
 
-public class MainGameActivity extends Activity {
+public abstract class MainGameActivity extends Activity {
 
-    private Button topBtn, bottomBtn;
-    private TextView pointsTextView, levelTextView;
-    private ProgressBar timerProgress;
+    protected TextView pointsTextView, levelTextView;
+    protected ProgressBar timerProgress;
 
-    private int level, points;
-    private boolean gameStart = false;
-    private Runnable runnable;
-    private int timer;
+    protected int level, points;
+    protected boolean gameStart = false;
+    protected Runnable runnable;
+    protected int timer;
 
-    private AnimatorSet pointAnim, levelAnim;
+    protected static final int POINT_INCREMENT = 2;
+    protected static int TIMER_DELTA = -1;
+    protected static final int TIMER_BUMP = 2;
+    protected static final int START_TIMER = 200;
+    protected static final int FPS = 100;
+    protected static final int LEVEL = 25;
 
-    private static final int POINT_INCREMENT = 2;
-    private static int TIMER_DELTA = -1;
-    private static final int TIMER_BUMP = 2;
-    private static final int START_TIMER = 200;
-    private static final int FPS = 100;
-    private static final int LEVEL = 25;
+    protected Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    }
 
-        topBtn = (Button) findViewById(R.id.top_button);
-        bottomBtn = (Button) findViewById(R.id.bottom_button);
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        endGame();
+    }
 
-        pointsTextView = (TextView) findViewById(R.id.points_value);
-        levelTextView = (TextView) findViewById(R.id.level_value);
-        TextView pointsLabel = (TextView) findViewById(R.id.points_label);
-        TextView levelsLabel = (TextView) findViewById(R.id.level_label);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        gameStart = false;
+    }
 
-        // setting up fonts
-        Typeface avenir_black = Typeface.createFromAsset(getAssets(), "fonts/avenir_black.ttf");
-        Typeface avenir_book = Typeface.createFromAsset(getAssets(), "fonts/avenir_book.ttf");
-        pointsTextView.setTypeface(avenir_black);
-        levelTextView.setTypeface(avenir_black);
-        pointsLabel.setTypeface(avenir_book);
-        levelsLabel.setTypeface(avenir_book);
-
-        timerProgress = (ProgressBar) findViewById(R.id.progress_bar);
-
-        final Handler handler = new Handler();
-
-        // initialize the crew
-        resetGame();
-
-        // setting up listeners on both buttons
-        topBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (!gameStart) return;
-                calculatePoints(view);
-                setColorsOnButtons();
-            }
-        });
-
-        // TODO: See if this duplication can be removed
-        bottomBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!gameStart) return;
-                calculatePoints(view);
-                setColorsOnButtons();
-            }
-        });
-
-        // setting up animations
-        pointAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.points_animations);
-        pointAnim.setTarget(pointsTextView);
-
-        levelAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.level_animations);
-        levelAnim.setTarget(levelTextView);
-
-        // setting up the game loop
+    protected void setupGameLoop() {
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -127,28 +81,9 @@ public class MainGameActivity extends Activity {
             }
         };
 
-        startGame();
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        endGame();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        gameStart = false;
-    }
-
-    private void setColorsOnButtons() {
-        int[] colorPair = getRandomColor();
-        topBtn.setBackgroundColor(colorPair[0]);
-        bottomBtn.setBackgroundColor(colorPair[1]);
-    }
-
-    private void resetGame() {
+    protected void resetGame() {
         gameStart = false;
         level = 1;
         points = 0;
@@ -159,7 +94,9 @@ public class MainGameActivity extends Activity {
         timerProgress.setProgress(0);
     }
 
-    private void startGame() {
+    abstract protected void setColorsOnButtons();
+
+    protected void startGame() {
         gameStart = true;
 
         Toast.makeText(this, R.string.game_help, Toast.LENGTH_SHORT).show();
@@ -171,86 +108,35 @@ public class MainGameActivity extends Activity {
         thread.start();
     }
 
-    private void endGame() {
+    protected void endGame() {
         gameStart = false;
-        boolean newScore = false;
+        int highScore = saveAndGetHighScore();
+        launchGameOver(highScore);
+        finish();
+    }
 
-        // PERSIST points in shared preferences
+    private int saveAndGetHighScore() {
         SharedPreferences preferences = this.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
         int highScore = preferences.getInt("HIGHSCORE", 0);
 
-        // update the high-score
         if (points > highScore) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt("HIGHSCORE", points);
             editor.apply();
             highScore = points;
-            newScore = true;
         }
+        return highScore;
+    }
 
+    private void launchGameOver(int highScore) {
         // Send data to another activity
         Intent intent = new Intent(this, GameOverActivity.class);
         intent.putExtra("points", points);
         intent.putExtra("level", level);
         intent.putExtra("best", highScore);
-        intent.putExtra("newScore", newScore);
+        intent.putExtra("newScore", highScore == points);
         startActivity(intent);
-
-        // finish main game activity
-        finish();
-    }
-
-    private void calculatePoints(View clickedView) {
-
-        View unclickedView = clickedView == topBtn ? bottomBtn : topBtn;
-        ColorDrawable clickedColor = (ColorDrawable) clickedView.getBackground();
-        ColorDrawable unClickedColor = (ColorDrawable) unclickedView.getBackground();
-
-        int alpha1 =  Color.alpha(clickedColor.getColor());
-        int alpha2 = Color.alpha(unClickedColor.getColor());
-
-        // correct guess
-        if (alpha1 < alpha2) {
-            points = points + POINT_INCREMENT;
-            TIMER_DELTA = -TIMER_BUMP * TIMER_DELTA; // give a timer bump
-            pointsTextView.setText(Integer.toString(points));
-            pointAnim.start();
-
-            // increment level
-            if (points > level * LEVEL) {
-                level += 1;
-                TIMER_DELTA = level;
-                levelTextView.setText(Integer.toString(level));
-                levelAnim.start();
-            }
-        } else {
-            // incorrect guess
-            endGame();
-        }
-    }
-
-    // generates a pair of colors separated by alpha
-    private int[] getRandomColor() {
-
-        int color = Color.parseColor(BetterColor.getColor());
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-
-        int alpha1, alpha2;
-        if (Math.random() > 0.5) {
-            alpha1 = 255;
-            alpha2 = 185;
-        } else {
-            alpha1 = 185;
-            alpha2 = 255;
-        }
-
-        int color1 = Color.argb(alpha1, red, green, blue);
-        int color2 = Color.argb(alpha2, red, green, blue);
-
-        return new int[] {color1, color2};
     }
 }
