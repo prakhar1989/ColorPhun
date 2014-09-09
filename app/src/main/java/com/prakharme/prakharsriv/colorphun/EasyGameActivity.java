@@ -26,8 +26,8 @@ public class EasyGameActivity extends MainGameActivity {
 
         topBtn = (Button) findViewById(R.id.top_button);
         bottomBtn = (Button) findViewById(R.id.bottom_button);
-        timerProgress = (ProgressBar) findViewById(R.id.progress_bar);
 
+        timerProgress = (ProgressBar) findViewById(R.id.progress_bar);
         pointsTextView = (TextView) findViewById(R.id.points_value);
         levelTextView = (TextView) findViewById(R.id.level_value);
         TextView pointsLabel = (TextView) findViewById(R.id.points_label);
@@ -79,15 +79,13 @@ public class EasyGameActivity extends MainGameActivity {
 
         // correct guess
         if (alpha1 < alpha2) {
-            points = points + POINT_INCREMENT;
-            TIMER_DELTA = -TIMER_BUMP * TIMER_DELTA; // give a timer bump
+            updatePoints();
             pointsTextView.setText(Integer.toString(points));
             pointAnim.start();
 
             // increment level
             if (points > level * LEVEL) {
-                level += 1;
-                TIMER_DELTA = level;
+                incrementLevel();
                 levelTextView.setText(Integer.toString(level));
                 levelAnim.start();
             }

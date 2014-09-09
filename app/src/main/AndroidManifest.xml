@@ -18,19 +18,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainGameActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait" >
         </activity>
-
         <activity
             android:name=".GameOverActivity"
             android:label="@string/title_activity_game_over"
             android:screenOrientation="portrait" >
         </activity>
-
         <activity
             android:name=".EasyGameActivity"
             android:label="@string/title_activity_easy_game" >
@@ -43,6 +40,11 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".HardGameActivity"
+            android:label="@string/title_activity_hard_game" >
+        </activity>
     </application>
 
 </manifest>

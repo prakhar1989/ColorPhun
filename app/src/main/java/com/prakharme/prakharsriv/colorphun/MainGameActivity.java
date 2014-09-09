@@ -164,6 +164,19 @@ public abstract class MainGameActivity extends Activity implements View.OnClickL
         return new int[] {color1, color2};
     }
 
+    // called on correct guess
+    public void updatePoints() {
+        points = points + POINT_INCREMENT;
+        TIMER_DELTA = -TIMER_BUMP * TIMER_DELTA; // give a timer bump
+    }
+
+    // called when user goes to next level
+    public void incrementLevel() {
+        level += 1;
+        TIMER_DELTA = level;
+    }
+
+    // ABSTRACT METHODS
     abstract protected void setColorsOnButtons();
 
     abstract protected void calculatePoints(View view);
