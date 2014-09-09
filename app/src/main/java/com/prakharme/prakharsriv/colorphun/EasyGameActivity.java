@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.prakharme.prakharsriv.colorphun.util.BetterColor;
 
 public class EasyGameActivity extends MainGameActivity {
 
@@ -45,37 +44,24 @@ public class EasyGameActivity extends MainGameActivity {
         // setting up animations
         pointAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.points_animations);
         pointAnim.setTarget(pointsTextView);
-
         levelAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.level_animations);
         levelAnim.setTarget(levelTextView);
 
+        topBtn.setOnClickListener(this);
+        bottomBtn.setOnClickListener(this);
 
-        // initialize the crew
+        // bootstrap game
         resetGame();
-
-        // setting up listeners on both buttons
-        topBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (!gameStart) return;
-                calculatePoints(view);
-                setColorsOnButtons();
-            }
-        });
-
-        // TODO: See if this duplication can be removed
-        bottomBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!gameStart) return;
-                calculatePoints(view);
-                setColorsOnButtons();
-            }
-        });
-
         setupGameLoop();
         startGame();
     }
 
+    @Override
+    public void onClick(View view) {
+        if (!gameStart) return;
+        calculatePoints(view);
+        setColorsOnButtons();
+    }
 
     protected void setColorsOnButtons() {
         int[] colorPair = getRandomColor();
@@ -83,13 +69,12 @@ public class EasyGameActivity extends MainGameActivity {
         bottomBtn.setBackgroundColor(colorPair[1]);
     }
 
-    private void calculatePoints(View clickedView) {
-
+    protected void calculatePoints(View clickedView) {
         View unclickedView = clickedView == topBtn ? bottomBtn : topBtn;
         ColorDrawable clickedColor = (ColorDrawable) clickedView.getBackground();
         ColorDrawable unClickedColor = (ColorDrawable) unclickedView.getBackground();
 
-        int alpha1 =  Color.alpha(clickedColor.getColor());
+        int alpha1 = Color.alpha(clickedColor.getColor());
         int alpha2 = Color.alpha(unClickedColor.getColor());
 
         // correct guess
@@ -110,29 +95,6 @@ public class EasyGameActivity extends MainGameActivity {
             // incorrect guess
             endGame();
         }
-    }
-
-    // generates a pair of colors separated by alpha
-    private int[] getRandomColor() {
-
-        int color = Color.parseColor(BetterColor.getColor());
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-
-        int alpha1, alpha2;
-        if (Math.random() > 0.5) {
-            alpha1 = 255;
-            alpha2 = 185;
-        } else {
-            alpha1 = 185;
-            alpha2 = 255;
-        }
-
-        int color1 = Color.argb(alpha1, red, green, blue);
-        int color2 = Color.argb(alpha2, red, green, blue);
-
-        return new int[] {color1, color2};
     }
 
 }

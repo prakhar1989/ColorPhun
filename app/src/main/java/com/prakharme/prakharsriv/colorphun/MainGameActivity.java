@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.prakharme.prakharsriv.colorphun.util.BetterColor;
 
-public abstract class MainGameActivity extends Activity {
+public abstract class MainGameActivity extends Activity implements View.OnClickListener {
 
     protected TextView pointsTextView, levelTextView;
     protected ProgressBar timerProgress;
@@ -94,8 +97,6 @@ public abstract class MainGameActivity extends Activity {
         timerProgress.setProgress(0);
     }
 
-    abstract protected void setColorsOnButtons();
-
     protected void startGame() {
         gameStart = true;
 
@@ -139,4 +140,31 @@ public abstract class MainGameActivity extends Activity {
         intent.putExtra("newScore", highScore == points);
         startActivity(intent);
     }
+
+    // generates a pair of colors separated by alpha
+    protected int[] getRandomColor() {
+
+        int color = Color.parseColor(BetterColor.getColor());
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+
+        int alpha1, alpha2;
+        if (Math.random() > 0.5) {
+            alpha1 = 255;
+            alpha2 = 185;
+        } else {
+            alpha1 = 185;
+            alpha2 = 255;
+        }
+
+        int color1 = Color.argb(alpha1, red, green, blue);
+        int color2 = Color.argb(alpha2, red, green, blue);
+
+        return new int[] {color1, color2};
+    }
+
+    abstract protected void setColorsOnButtons();
+
+    abstract protected void calculatePoints(View view);
 }
