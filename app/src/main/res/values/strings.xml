@@ -40,5 +40,6 @@
     <string name="ACHIEVEMENT_COLORBLIND_ID">CgkIroHwx8UJEAIQDg</string>
     <string name="ACHIEVEMENT_IMPOSSIBLE_ID">CgkIroHwx8UJEAIQDw</string>
     <string name="title_activity_easy_game">EasyGameActivity</string>
+    <string name="title_activity_hard_game">HardGameActivity</string>
 
 </resources>

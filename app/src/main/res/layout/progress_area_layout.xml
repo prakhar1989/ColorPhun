@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_height="30dp"
+        android:id="@+id/progress_bar"
+        android:progressDrawable="@drawable/timer_progress"
+        android:max="400" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/points_label"
+            android:text="@string/points_text"
+            android:textColor="@color/text_label"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/points_value"
+            android:textColor="@color/number_label"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_toEndOf="@id/points_label"
+            android:layout_toRightOf="@id/points_label"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/level_value"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/number_label"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/level_label"
+            android:text="@string/level_text"
+            android:textColor="@color/text_label"
+            android:layout_toStartOf="@id/level_value"
+            android:layout_toLeftOf="@id/level_value"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>
