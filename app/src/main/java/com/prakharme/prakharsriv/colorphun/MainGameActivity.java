@@ -1,10 +1,13 @@
 package com.prakharme.prakharsriv.colorphun;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,15 +21,16 @@ public abstract class MainGameActivity extends Activity implements View.OnClickL
 
     protected TextView pointsTextView, levelTextView;
     protected ProgressBar timerProgress;
+    protected AnimatorSet pointAnim, levelAnim;
 
     protected int level, points;
     protected boolean gameStart = false;
     protected Runnable runnable;
     protected int timer;
 
-    protected static final int POINT_INCREMENT = 2;
+    protected int POINT_INCREMENT;
+    protected int TIMER_BUMP;
     protected static int TIMER_DELTA = -1;
-    protected static final int TIMER_BUMP = 2;
     protected static final int START_TIMER = 200;
     protected static final int FPS = 100;
     protected static final int LEVEL = 25;
@@ -36,6 +40,29 @@ public abstract class MainGameActivity extends Activity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handler = new Handler();
+    }
+
+    protected void setupProgressView() {
+        timerProgress = (ProgressBar) findViewById(R.id.progress_bar);
+        pointsTextView = (TextView) findViewById(R.id.points_value);
+        levelTextView = (TextView) findViewById(R.id.level_value);
+        TextView pointsLabel = (TextView) findViewById(R.id.points_label);
+        TextView levelsLabel = (TextView) findViewById(R.id.level_label);
+
+        // setting up fonts
+        Typeface avenir_black = Typeface.createFromAsset(getAssets(), "fonts/avenir_black.ttf");
+        Typeface avenir_book = Typeface.createFromAsset(getAssets(), "fonts/avenir_book.ttf");
+        pointsTextView.setTypeface(avenir_black);
+        levelTextView.setTypeface(avenir_black);
+        pointsLabel.setTypeface(avenir_book);
+        levelsLabel.setTypeface(avenir_book);
+
+        // setting up animations
+        pointAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.points_animations);
+        pointAnim.setTarget(pointsTextView);
+        levelAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.level_animations);
+        levelAnim.setTarget(levelTextView);
     }
 
     @Override
@@ -168,6 +195,14 @@ public abstract class MainGameActivity extends Activity implements View.OnClickL
     public void updatePoints() {
         points = points + POINT_INCREMENT;
         TIMER_DELTA = -TIMER_BUMP * TIMER_DELTA; // give a timer bump
+        pointsTextView.setText(Integer.toString(points));
+        pointAnim.start();
+
+        if (points > level * LEVEL) {
+            incrementLevel();
+            levelTextView.setText(Integer.toString(level));
+            levelAnim.start();
+        }
     }
 
     // called when user goes to next level

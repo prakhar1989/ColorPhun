@@ -1,52 +1,85 @@
 package com.prakharme.prakharsriv.colorphun;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.graphics.Typeface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.Button;
+import com.prakharme.prakharsriv.colorphun.util.BetterColor;
+import java.util.ArrayList;
+import java.util.Random;
 
 
 public class HardGameActivity extends MainGameActivity {
 
-    private AnimatorSet pointAnim, levelAnim;
+    private ArrayList<Button> buttonList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hard_game);
+        setupProgressView();
 
-        timerProgress = (ProgressBar) findViewById(R.id.progress_bar);
-        pointsTextView = (TextView) findViewById(R.id.points_value);
-        levelTextView = (TextView) findViewById(R.id.level_value);
-        TextView pointsLabel = (TextView) findViewById(R.id.points_label);
-        TextView levelsLabel = (TextView) findViewById(R.id.level_label);
+        POINT_INCREMENT = 4;
+        TIMER_BUMP = 2;
 
-        // setting up fonts
-        Typeface avenir_black = Typeface.createFromAsset(getAssets(), "fonts/avenir_black.ttf");
-        Typeface avenir_book = Typeface.createFromAsset(getAssets(), "fonts/avenir_book.ttf");
-        pointsTextView.setTypeface(avenir_black);
-        levelTextView.setTypeface(avenir_black);
-        pointsLabel.setTypeface(avenir_book);
-        levelsLabel.setTypeface(avenir_book);
+        // buttons
+        Button button_1 = (Button) findViewById(R.id.button_1);
+        Button button_2 = (Button) findViewById(R.id.button_2);
+        Button button_3 = (Button) findViewById(R.id.button_3);
+        Button button_4 = (Button) findViewById(R.id.button_4);
 
-        // setting up animations
-        pointAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.points_animations);
-        pointAnim.setTarget(pointsTextView);
-        levelAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.level_animations);
-        levelAnim.setTarget(levelTextView);
+        button_1.setOnClickListener(this);
+        button_2.setOnClickListener(this);
+        button_3.setOnClickListener(this);
+        button_4.setOnClickListener(this);
+
+        buttonList = new ArrayList<Button>();
+        buttonList.add(button_1);
+        buttonList.add(button_2);
+        buttonList.add(button_3);
+        buttonList.add(button_4);
+
+        // bootstrap game
+        resetGame();
+        setupGameLoop();
+        startGame();
     }
 
     @Override
     protected void setColorsOnButtons() {
+        int color  = Color.parseColor(BetterColor.getColor());
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        Random rand = new Random();
 
+        for (Button button : buttonList) {
+            int alpha = 20 + rand.nextInt(235);
+            button.setBackgroundColor(Color.argb(alpha, red, green, blue));
+        }
     }
 
     @Override
-    protected void calculatePoints(View view) {
+    protected void calculatePoints(View clickedView) {
+        ColorDrawable clickedColor = (ColorDrawable) clickedView.getBackground();
+        int clickedAlpha = Color.alpha(clickedColor.getColor());
 
+        int lightestColor = clickedAlpha;
+        for (Button button : buttonList) {
+            ColorDrawable color = (ColorDrawable) button.getBackground();
+            int alpha = Color.alpha(color.getColor());
+            if (alpha < lightestColor) {
+                lightestColor = alpha;
+            }
+        }
+
+        // correct guess
+        if (lightestColor == clickedAlpha) {
+            updatePoints();
+        } else {
+            endGame();
+        }
     }
 
     @Override
