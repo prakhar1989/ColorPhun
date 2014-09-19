@@ -52,11 +52,11 @@ public class HardGameActivity extends MainGameActivity {
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);
-        Random rand = new Random();
+        int[] alphas = shuffledColors();
 
-        for (Button button : buttonList) {
-            int alpha = 20 + rand.nextInt(235);
-            button.setBackgroundColor(Color.argb(alpha, red, green, blue));
+        for (int i = 0; i < alphas.length; i++) {
+            Button button = buttonList.get(i);
+            button.setBackgroundColor(Color.argb(alphas[i], red, green, blue));
         }
     }
 
@@ -87,5 +87,20 @@ public class HardGameActivity extends MainGameActivity {
         if (!gameStart) return;
         calculatePoints(view);
         setColorsOnButtons();
+    }
+
+
+    private int[] shuffledColors() {
+        Random random = new Random();
+        int[] arr = {255, 185, 155, 225 };
+        for (int i = arr.length - 1; i >= 1; i--) {
+            int j = random.nextInt(i);
+            // swap i and j
+            int tmp;
+            tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+        }
+        return arr;
     }
 }
