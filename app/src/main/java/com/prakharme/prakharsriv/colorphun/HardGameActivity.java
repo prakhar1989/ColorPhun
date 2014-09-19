@@ -23,6 +23,8 @@ public class HardGameActivity extends MainGameActivity {
         POINT_INCREMENT = 4;
         TIMER_BUMP = 2;
 
+        gameMode = GameMode.HARD;
+
         // buttons
         Button button_1 = (Button) findViewById(R.id.button_1);
         Button button_2 = (Button) findViewById(R.id.button_2);
@@ -78,6 +80,7 @@ public class HardGameActivity extends MainGameActivity {
         if (lightestColor == clickedAlpha) {
             updatePoints();
         } else {
+            // false - hard mode
             endGame();
         }
     }
@@ -90,6 +93,7 @@ public class HardGameActivity extends MainGameActivity {
     }
 
 
+    // Fisher Yates shuffling algorithm
     private int[] shuffledColors() {
         Random random = new Random();
         int[] arr = {255, 185, 155, 225 };

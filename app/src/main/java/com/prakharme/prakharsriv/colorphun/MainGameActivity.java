@@ -5,8 +5,8 @@ import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.prakharme.prakharsriv.colorphun.util.BetterColor;
 
 public abstract class MainGameActivity extends Activity implements View.OnClickListener {
 
@@ -27,6 +26,9 @@ public abstract class MainGameActivity extends Activity implements View.OnClickL
     protected boolean gameStart = false;
     protected Runnable runnable;
     protected int timer;
+
+    public enum GameMode { EASY, HARD }
+    protected GameMode gameMode;
 
     protected int POINT_INCREMENT;
     protected int TIMER_BUMP;
@@ -136,6 +138,11 @@ public abstract class MainGameActivity extends Activity implements View.OnClickL
         thread.start();
     }
 
+    @Override
+    public void startIntentSenderForResult(IntentSender intent, int requestCode, Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags) throws IntentSender.SendIntentException {
+        super.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags);
+    }
+
     protected void endGame() {
         gameStart = false;
         int highScore = saveAndGetHighScore();
@@ -165,30 +172,8 @@ public abstract class MainGameActivity extends Activity implements View.OnClickL
         intent.putExtra("level", level);
         intent.putExtra("best", highScore);
         intent.putExtra("newScore", highScore == points);
+        intent.putExtra("gameMode", gameMode.name());
         startActivity(intent);
-    }
-
-    // generates a pair of colors separated by alpha
-    protected int[] getRandomColor() {
-
-        int color = Color.parseColor(BetterColor.getColor());
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-
-        int alpha1, alpha2;
-        if (Math.random() > 0.5) {
-            alpha1 = 255;
-            alpha2 = 185;
-        } else {
-            alpha1 = 185;
-            alpha2 = 255;
-        }
-
-        int color1 = Color.argb(alpha1, red, green, blue);
-        int color2 = Color.argb(alpha2, red, green, blue);
-
-        return new int[] {color1, color2};
     }
 
     // called on correct guess

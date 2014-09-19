@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.prakharme.prakharsriv.colorphun.util.BetterColor;
+
 public class EasyGameActivity extends MainGameActivity {
 
     private Button topBtn, bottomBtn;
@@ -18,6 +20,8 @@ public class EasyGameActivity extends MainGameActivity {
 
         POINT_INCREMENT = 2;
         TIMER_BUMP = 2;
+
+        gameMode = GameMode.EASY;
 
         topBtn = (Button) findViewById(R.id.top_button);
         bottomBtn = (Button) findViewById(R.id.bottom_button);
@@ -38,9 +42,22 @@ public class EasyGameActivity extends MainGameActivity {
     }
 
     protected void setColorsOnButtons() {
-        int[] colorPair = getRandomColor();
-        topBtn.setBackgroundColor(colorPair[0]);
-        bottomBtn.setBackgroundColor(colorPair[1]);
+        int color = Color.parseColor(BetterColor.getColor());
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+
+        int alpha1, alpha2;
+        if (Math.random() > 0.5) {
+            alpha1 = 255;
+            alpha2 = 185;
+        } else {
+            alpha1 = 185;
+            alpha2 = 255;
+        }
+
+        topBtn.setBackgroundColor(Color.argb(alpha1, red, green, blue));
+        bottomBtn.setBackgroundColor(Color.argb(alpha2, red, green, blue));
     }
 
     protected void calculatePoints(View clickedView) {

@@ -27,6 +27,7 @@ public class GameOverActivity extends BaseGameActivity {
     private boolean shown = false;
     private TextView gameOverText, pointsBox, highScoreText;
     private SharedPreferences sharedPreferences;
+    private MainGameActivity.GameMode mode;
 
     final int REQUEST_LEADERBOARD = 4000;
     final int REQUEST_ACHIEVEMENTS = 5000;
@@ -74,6 +75,7 @@ public class GameOverActivity extends BaseGameActivity {
         level = bundle.getInt("level");
         best = bundle.getInt("best");
         newScore = bundle.getBoolean("newScore");
+        mode =  MainGameActivity.GameMode.valueOf(bundle.getString("gameMode"));
 
         // set data
         pointsBox.setText(String.format("%03d", points));
@@ -102,7 +104,6 @@ public class GameOverActivity extends BaseGameActivity {
                 highScoreAnim.setDuration(600);
                 highScoreAnim.start();
             }
-
             pointsAnim.start();
         }
     }
@@ -121,7 +122,11 @@ public class GameOverActivity extends BaseGameActivity {
     }
 
     public void playGame(View view) {
-        startActivity(new Intent(this, EasyGameActivity.class));
+        if (mode == MainGameActivity.GameMode.EASY) {
+            startActivity(new Intent(this, EasyGameActivity.class));
+        } else {
+            startActivity(new Intent(this, HardGameActivity.class));
+        }
         finish();
     }
 
