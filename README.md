@@ -7,9 +7,12 @@ ColorPhun
 
 ColorPhun is a simple color based Android Game.
 
-![Image](shot.png)
-
 ### Features
 - Google Play Services Integration
 - Leaderboards
 - Achievements
+
+### Why Open-Source?
+
+I have learnt a lot from the open code out there and this is my small token to repay the love. Hopefully, this will help another Android developer if they are on a quest to make a game.
+You are free to fork and clone the way you want it. Just don't release the same app on the Play Store. In short, dont be a jerk.

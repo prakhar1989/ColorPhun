@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_bg"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <include layout="@layout/progress_area_layout" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:stretchColumns="0">
+
+        <TableRow>
+            <Button
+                android:id="@+id/button_1"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="260dp" />
+
+            <Button
+                android:id="@+id/button_2"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/button_3"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="260dp" />
+
+            <Button
+                android:id="@+id/button_4"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </TableRow>
+
+    </TableLayout>
+</LinearLayout>
