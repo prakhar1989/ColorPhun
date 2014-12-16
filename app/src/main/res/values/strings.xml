@@ -41,5 +41,8 @@
     <string name="ACHIEVEMENT_IMPOSSIBLE_ID">CgkIroHwx8UJEAIQDw</string>
     <string name="title_activity_easy_game">EasyGameActivity</string>
     <string name="title_activity_hard_game">HardGameActivity</string>
+    <string name="ludomotor_reward">Claim Reward</string>
+    <string name="ludomotor_later">Remind me later</string>
+    <string name="ludomotor_email">No problem! We\'ll send over an email with your reward</string>
 
 </resources>

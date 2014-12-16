@@ -2,18 +2,27 @@ package com.prakharme.prakharsriv.colorphun;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.games.Game;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
@@ -90,7 +99,6 @@ public class GameOverActivity extends BaseGameActivity {
         }
     }
 
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         if (hasFocus && !shown) {
@@ -104,7 +112,30 @@ public class GameOverActivity extends BaseGameActivity {
                 highScoreAnim.setDuration(600);
                 highScoreAnim.start();
             }
-            pointsAnim.start();
+
+            LayoutInflater inflater = GameOverActivity.this.getLayoutInflater();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setView(inflater.inflate(R.layout.dialog_ludomotor, null))
+                .setPositiveButton(R.string.ludomotor_reward, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Uri uri = Uri.parse("http://www.flipkart.com");
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(launchBrowser);
+                    }
+                })
+                .setNegativeButton(R.string.ludomotor_later, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(GameOverActivity.this, R.string.ludomotor_email, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            // show alert box when score > 20 - LUDOMOTOR
+            if (points >= 20) {
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
         }
     }
 

@@ -128,6 +128,7 @@ public class HomeScreenActivity extends BaseGameActivity implements View.OnClick
     }
 
     public void playGame(View view) {
+        /* This is where we initiate the Easy or Hard Activity */
         startActivity(new Intent(this, EasyGameActivity.class));
         //startActivity(new Intent(this, HardGameActivity.class));
     }
